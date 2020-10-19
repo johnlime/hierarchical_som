@@ -8,7 +8,7 @@ class KohonenSOM:
         self.node_size = node_size
         self.tau = update_iterations
         dim = int(math.sqrt(self.total_nodes))
-        self.w = torch.empty(self.total_nodes, self.node_size)
+        self.w = torch.randn(self.total_nodes, self.node_size)
         self.location = torch.empty(self.total_nodes, self.node_size)
         for i in range(dim):
             for j in range(dim):
