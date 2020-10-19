@@ -1,0 +1,5 @@
+1. Should test cartpole with PD control beforehand
+
+2. (Derivative of error should be the difference between derivative of reference and current signals)
+
+3. Hierarchical structure could be used for more complex sequential tasks
