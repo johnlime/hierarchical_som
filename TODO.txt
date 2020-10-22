@@ -1,5 +1,10 @@
 1. Should test cartpole with PD control beforehand
+DONE
 
 2. (Derivative of error should be the difference between derivative of reference and current signals)
 
+2.1. "Additional states" may have to be organized in a different SOM model
+
 3. Hierarchical structure could be used for more complex sequential tasks
+
+3.1. Can SOM be adapted to deal with unstable dynamical systems?
