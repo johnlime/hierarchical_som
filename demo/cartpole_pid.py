@@ -4,7 +4,7 @@ import random
 
 import matplotlib.pyplot as plt
 
-manager_maxitr = 1
+manager_maxitr = 20
 maxtime = 10 ** 3
 gamma = 0.99
 cumulative_return = []
@@ -17,11 +17,11 @@ for epoch in range(manager_maxitr):
     obs = env.reset()
 
     # coefficients for PD control
-    k_p = 0.1 # Does not matter in this case due to the fact that the action is binary
-    k_d = 0.0
+    k_p = 1.0 # Does not matter in this case due to the fact that the action is binary
+    k_d = 0.01 * epoch
 
     for t in range(0, maxtime):
-        env.render()
+        # env.render()
         obs_trajectory.append(obs[0])
         # PD control
         action = k_p * (0 - obs[0]) + k_d * (0 - obs[1])
@@ -34,6 +34,6 @@ for epoch in range(manager_maxitr):
         obs = next_obs
 
     plt.plot(np.linspace(0, len(obs_trajectory), num = len(obs_trajectory)), np.array(obs_trajectory), marker='.', linestyle='-', color='blue')
-    plt.title('k_p = ' + str(k_p))
+    plt.title('k_d = ' + str(k_d))
     # plt.savefig()
     plt.clf()
