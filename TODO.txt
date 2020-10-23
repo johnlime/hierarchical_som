@@ -8,6 +8,7 @@ DONE
 TESTED: UNDESIRABLE RESULT
 
 2.1.1. UPDATE FUNCTION NOT CALLED FOR MANAGER SOMS!!!
+DONE: RESULTS STILL TERRIBLE
 
 2.2. Using an approximation of state and action spaces not be appropriate when the task is to arrive to an unstable fixed point. (3.1)
 
