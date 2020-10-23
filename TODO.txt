@@ -7,6 +7,8 @@ DONE
 2.1. "Additional states" may have to be organized in a different SOM model
 TESTED: UNDESIRABLE RESULT
 
+2.1.1. UPDATE FUNCTION NOT CALLED FOR MANAGER SOMS!!!
+
 2.2. Using an approximation of state and action spaces not be appropriate when the task is to arrive to an unstable fixed point. (3.1)
 
 2.3. Since the goal of the algorithm is to mimic the cerebral cortex, research results in that field should be taken into consideration for better understanding and engineering.
