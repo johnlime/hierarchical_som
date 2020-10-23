@@ -60,12 +60,25 @@ class ManagerSOM (KohonenSOM):
         else:
             current_state_space = current_winner
 
+        winner_c = self.select_winner(current_state_space)
+
         # update q-value using new reward and largest est. prob of action
-        self.w[self.select_winner(current_state_space)][self.state_indices + self.add_state + next_winner_index] += lr * (
+        self.w[winner_c][self.state_indices + self.add_state + next_winner_index] += lr * (
             reward
             + gamma * self.get_softmax(current_state_space)
-            - self.w[self.select_winner(current_state_space)][self.state_indices + self.add_state + next_winner_index]
+            - self.w[winner_c][self.state_indices + self.add_state + next_winner_index]
             )
+
+        part_x = torch.cat((current_state_space, self.w[winner_c][self.state_indices + self.add_state :]))
+
+        if htype==0:
+            self.w += self.h0(winner_c, t)*(part_x - self.w)
+        elif htype==1:
+            self.w += self.h1(winner_c, t)*(part_x - self.w)
+
+    def update(self, x=None, t=None, htype=0):
+        raise NameError('Use action_q_learning() instead of update()')
+        return None, None
 
 
 class ManagerSOMv2 (KohonenSOM):
@@ -130,9 +143,22 @@ class ManagerSOMv2 (KohonenSOM):
         else:
             current_state_space = current_winner
 
+        winner_c = self.select_winner(current_state_space)
+
         # update q-value using new reward and largest est. prob of action
-        self.w[self.select_winner(current_state_space)][- self.state_indices[0] + next_winner_index] += lr * (
+        self.w[winner_c][- self.state_indices[0] + next_winner_index] += lr * (
             reward
             + gamma * self.get_softmax(current_state_space)
-            - self.w[self.select_winner(current_state_space)][- self.state_indices[0] + next_winner_index]
+            - self.w[winner_c][- self.state_indices[0] + next_winner_index]
             )
+
+        part_x = torch.cat((current_state_space, self.w[winner_c][- self.state_indices[0] :]))
+
+        if htype==0:
+            self.w += self.h0(winner_c, t)*(part_x - self.w)
+        elif htype==1:
+            self.w += self.h1(winner_c, t)*(part_x - self.w)
+
+    def update(self, x=None, t=None, htype=0):
+        raise NameError('Use action_q_learning() instead of update()')
+        return None, None
