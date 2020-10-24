@@ -7,7 +7,7 @@ from model.manager_som import ManagerSOM
 
 import matplotlib.pyplot as plt
 
-manager_maxitr = 10 ** 3
+manager_maxitr = 5 * 10 ** 3
 maxtime = 10 ** 2
 gamma = 0.99
 epsilon = 0.3
@@ -25,20 +25,21 @@ for epoch in range(manager_maxitr):
 
     for t in range(0, maxtime):
 #         env.render()
-        # create one-hot vector for winner worker som
-        current_winner_index = som.select_winner(obs[:2])
-        current_position = torch.zeros(manager_som.state_indices + 2)
-        current_position[current_winner_index] = 1
+        if t % 5 == 0:
+            # create one-hot vector for winner worker som
+            current_winner_index = som.select_winner(obs[:2])
+            current_position = torch.zeros(manager_som.state_indices + 2)
+            current_position[current_winner_index] = 1
 
-        # additional state
-        current_position[-2:] = torch.tensor(obs[2:])
+            # additional state
+            current_position[-2:] = torch.tensor(obs[2:])
 
-        # epsilon greedy
-        if random.random() > epsilon:
-            action_index = manager_som.get_action(current_position) # deterministic
+            # epsilon greedy
+            if random.random() > epsilon:
+                action_index = manager_som.get_action(current_position) # deterministic
 
-        else:
-            action_index = random.randrange(10)
+            else:
+                action_index = random.randrange(10)
 
         # Pseudo-PD control
         k_p = 1.0
@@ -64,14 +65,14 @@ for epoch in range(manager_maxitr):
         if done:
             print("Episode finished after {} timesteps".format(t+1))
             print(epoch, total_return)
-            if epoch % 9 == 0:
+            if epoch % 99 == 0:
                 cumulative_return.append(total_return)
             break
 
     obs = env.reset()
 
 plt.plot(np.linspace(0, len(cumulative_return), num = len(cumulative_return)), np.array(cumulative_return), marker='.', linestyle='-', color='blue')
-plt.show()
+plt.savefig('data/cartpole_figures/v1_rn.png')
 
-filehandler = open("data/manager_som.obj", 'wb')
+filehandler = open("data/manager_som_rn.obj", 'wb')
 pickle.dump(manager_som, filehandler)
