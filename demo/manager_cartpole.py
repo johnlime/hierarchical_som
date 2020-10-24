@@ -72,7 +72,7 @@ for epoch in range(manager_maxitr):
     obs = env.reset()
 
 plt.plot(np.linspace(0, len(cumulative_return), num = len(cumulative_return)), np.array(cumulative_return), marker='.', linestyle='-', color='blue')
-plt.savefig('data/cartpole_figures/v1_rn.png')
+# plt.savefig()
 
-filehandler = open("data/manager_som_rn.obj", 'wb')
+# filehandler = open(, 'wb')
 pickle.dump(manager_som, filehandler)

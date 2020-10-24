@@ -75,11 +75,11 @@ class ManagerSOM (KohonenSOM):
                 - self.w[:, :self.state_indices + self.add_state]
                 )
 
-            # reward neighboring
-            self.w[:, self.state_indices + self.add_state + next_winner_index] += torch.transpose(self.h0(winner_c, t), 0, 1)[0] * (
-                self.w[winner_c][self.state_indices + self.add_state + next_winner_index]
-                - self.w[:, self.state_indices + self.add_state + next_winner_index]
-                )
+            # # reward neighboring
+            # self.w[:, self.state_indices + self.add_state + next_winner_index] += torch.transpose(self.h0(winner_c, t), 0, 1)[0] * (
+            #     self.w[winner_c][self.state_indices + self.add_state + next_winner_index]
+            #     - self.w[:, self.state_indices + self.add_state + next_winner_index]
+            #     )
 
         elif htype==1:
             self.w[:, :self.state_indices + self.add_state] += self.h1(winner_c, t) * (
@@ -87,11 +87,11 @@ class ManagerSOM (KohonenSOM):
                 - self.w[:, :self.state_indices + self.add_state]
                 )
 
-            # reward neighborings
-            self.w[:, self.state_indices + self.add_state + next_winner_index] += torch.transpose(self.h1(winner_c, t), 0, 1)[0] * (
-                self.w[winner_c][self.state_indices + self.add_state + next_winner_index]
-                - self.w[:, self.state_indices + self.add_state + next_winner_index]
-                )
+            # # reward neighborings
+            # self.w[:, self.state_indices + self.add_state + next_winner_index] += torch.transpose(self.h1(winner_c, t), 0, 1)[0] * (
+            #     self.w[winner_c][self.state_indices + self.add_state + next_winner_index]
+            #     - self.w[:, self.state_indices + self.add_state + next_winner_index]
+            #     )
 
     def update(self, x=None, t=None, htype=0):
         raise NameError('Use action_q_learning() instead of update()')
@@ -177,11 +177,11 @@ class ManagerSOMv2 (KohonenSOM):
                 - self.w[:, : -self.state_indices[0]]
                 )
 
-            # reward neighboring
-            self.w[:, next_winner_index - self.state_indices[0]] += torch.transpose(self.h0(winner_c, t), 0, 1)[0] * (
-                self.w[winner_c][next_winner_index - self.state_indices[0]]
-                - self.w[:, next_winner_index - self.state_indices[0]]
-                )
+            # # reward neighboring
+            # self.w[:, next_winner_index - self.state_indices[0]] += torch.transpose(self.h0(winner_c, t), 0, 1)[0] * (
+            #     self.w[winner_c][next_winner_index - self.state_indices[0]]
+            #     - self.w[:, next_winner_index - self.state_indices[0]]
+            #     )
 
         elif htype==1:
             self.w[:, : -self.state_indices[0]] += self.h1(winner_c, t) * (
@@ -189,11 +189,11 @@ class ManagerSOMv2 (KohonenSOM):
                 - self.w[:, : -self.state_indices[0]]
                 )
 
-            # reward neighboring
-            self.w[:, next_winner_index - self.state_indices[0]] += torch.transpose(self.h1(winner_c, t), 0, 1)[0] * (
-                self.w[winner_c][next_winner_index - self.state_indices[0]]
-                - self.w[:, next_winner_index - self.state_indices[0]]
-                )
+            # # reward neighboring
+            # self.w[:, next_winner_index - self.state_indices[0]] += torch.transpose(self.h1(winner_c, t), 0, 1)[0] * (
+            #     self.w[winner_c][next_winner_index - self.state_indices[0]]
+            #     - self.w[:, next_winner_index - self.state_indices[0]]
+            #     )
 
     def update(self, x=None, t=None, htype=0):
         raise NameError('Use action_q_learning() instead of update()')
