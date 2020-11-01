@@ -13,12 +13,15 @@ gamma = 0.99
 epsilon = 0.3
 cumulative_return = []
 
-pos_filehandler = open("data/som_pos.obj", 'rb')
-som_pos = pickle.load(pos_filehandler)
-angle_filehandler = open("data/som_ang.obj", 'rb')
-som_ang = pickle.load(angle_filehandler)
+state_filehandler = open("data/state_som.obj", 'rb')
+state_som = pickle.load(state_filehandler)
+worker_filehandler = open("data/worker_som.obj", 'rb')
+worker_som = pickle.load(worker_filehandler)
 
-manager_som = ManagerSOM(total_nodes=100, worker_som=[som_pos, som_ang], update_iterations=manager_maxitr)
+manager_som = ManagerSOM(total_nodes = 100,
+                        worker_som = worker_som,
+                        state_som = state_som,
+                        update_iterations=manager_maxitr)
 env = gym.make("CartPole-v1")
 obs = env.reset()
 
