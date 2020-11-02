@@ -5,8 +5,8 @@ from model.kohonen_som import KohonenSOM
 env = gym.make("CartPole-v1")
 observation = env.reset()
 maxitr = 10 ** 3
-state_som = KohonenSOM(total_nodes=10, node_size=4, update_iterations=maxitr)
-worker_som = KohonenSOM(total_nodes=10, node_size=1, update_iterations=maxitr)
+state_som = KohonenSOM(total_nodes=9, node_size=4, update_iterations=maxitr)
+worker_som = KohonenSOM(total_nodes=9, node_size=1, update_iterations=maxitr)
 
 sampled_length = 0
 sample_iter = 100
@@ -18,7 +18,7 @@ for __ in range(sample_iter):
         action = env.action_space.sample() # random actions for exploration
         action_pool[sampled_length][0] = action
         obs, reward, done, info = env.step(action)
-        pose_pool[sampled_length] = obs
+        pose_pool[sampled_length] = torch.tensor(obs)
         sampled_length += 1
 
         if done:
@@ -29,7 +29,7 @@ env.close()
 
 for iteration in range(maxitr):
     state_som.update(pose_pool[:sampled_length], iteration)
-    worker_som.update(action_pool[:sampled_length, iteration])
+    worker_som.update(action_pool[:sampled_length], iteration)
 
 import pickle
 state_filehandler = open("data/state_som.obj", 'wb')

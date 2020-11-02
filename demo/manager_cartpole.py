@@ -36,18 +36,24 @@ for epoch in range(manager_maxitr):
 
             # epsilon greedy
             if random.random() > epsilon:
-                action = manager_som.get_action(state_vector) # deterministic
+                action_index = manager_som.get_action(state_vector) # deterministic
 
             else:
-                action = random.randrange(worker_som.total_nodes)
+                action_index = random.randrange(worker_som.total_nodes)
+
+        if worker_som.w[action_index][0] >= 0.5:
+            action = 1
+        else:
+            action = 0
 
         next_obs, reward, done, _ = env.step(action)
 
         # online training
         manager_som.action_q_learning(
-            state_index = state_som.select_winner(obs),
-            action_index = state_som.select_winner(obs),
+            current_state_index = state_som.select_winner(obs),
+            action_index = action_index,
             reward = reward,
+            next_state_index = state_som.select_winner(next_obs),
             t = epoch,
             gamma = gamma)
 
