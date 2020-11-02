@@ -40,29 +40,31 @@ class ManagerSOM (KohonenSOM):
             self.select_winner(x)
             ][-self.worker_som.total_nodes:]))[0]
 
-    def action_q_learning(
-            self,
-            state_index = None,
-            action_index = None,
-            reward = 0,
-            t = None,
-            htype = 0,
-            lr = 0.9,
-            gamma = 0.9):
+    def action_q_learning(self,
+                        current_state_index = None,
+                        action_index = None,
+                        reward = 0,
+                        next_state_index = None,
+                        t = None,
+                        htype = 0,
+                        lr = 0.9,
+                        gamma = 0.9):
         current_state_space = torch.zeros(self.state_som.total_nodes)
-        current_state_space[state_index] = 1
+        current_state_space[current_state_index] = 1
+
+        next_state_space = torch.zeros(self.state_som.total_nodes)
+        next_state_space[next_state_index] = 1
 
         winner_c = self.select_winner(current_state_space)
 
         # update q-value using new reward and largest est. prob of action
         self.w[winner_c][self.state_som.total_nodes + action_index] += lr * (
             reward
-            + gamma * self.get_softmax(current_state_space)
+            + gamma * self.get_softmax(next_state_space)
             - self.w[winner_c][self.state_som.total_nodes + action_index]
             )
 
-        part_x = torch.cat((current_state_space, self.w[winner_c][self.worker_som.total_nodes:]))
-
+        # update weights by neighboring the state spaces
         if htype==0:
             self.w[:, :self.state_som.total_nodes] += self.h0(winner_c, t) * (
                 current_state_space

@@ -18,8 +18,7 @@ for __ in range(sample_iter):
         action = env.action_space.sample() # random actions for exploration
         action_pool[sampled_length][0] = action
         obs, reward, done, info = env.step(action)
-        for i in range(4):
-            pose_pool[sampled_length][i] = obs[i]
+        pose_pool[sampled_length] = obs
         sampled_length += 1
 
         if done:
