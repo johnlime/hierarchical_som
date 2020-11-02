@@ -7,7 +7,7 @@ from model.manager_som import ManagerSOM
 
 import matplotlib.pyplot as plt
 
-manager_maxitr = 10 ** 3
+manager_maxitr = 5 * 10 ** 3
 maxtime = 10 ** 2
 gamma = 0.99
 epsilon = 0.3
