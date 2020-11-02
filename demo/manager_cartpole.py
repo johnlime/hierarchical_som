@@ -30,16 +30,15 @@ for epoch in range(manager_maxitr):
 
     for t in range(0, maxtime):
 #         env.render()
-        if t % 5 == 0:
-            state_vector = torch.zeros(state_som.total_nodes)
-            state_vector[state_som.select_winner(obs)] = 1
+        state_vector = torch.zeros(state_som.total_nodes)
+        state_vector[state_som.select_winner(obs)] = 1
 
-            # epsilon greedy
-            if random.random() > epsilon:
-                action_index = manager_som.get_action(state_vector) # deterministic
+        # epsilon greedy
+        if random.random() > epsilon:
+            action_index = manager_som.get_action(state_vector) # deterministic
 
-            else:
-                action_index = random.randrange(worker_som.total_nodes)
+        else:
+            action_index = random.randrange(worker_som.total_nodes)
 
         if worker_som.w[action_index][0] >= 0.5:
             action = 1

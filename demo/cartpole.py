@@ -5,8 +5,8 @@ from model.kohonen_som import KohonenSOM
 env = gym.make("CartPole-v1")
 observation = env.reset()
 maxitr = 10 ** 3
-state_som = KohonenSOM(total_nodes=9, node_size=4, update_iterations=maxitr)
-worker_som = KohonenSOM(total_nodes=9, node_size=1, update_iterations=maxitr)
+state_som = KohonenSOM(total_nodes=100, node_size=4, update_iterations=maxitr)
+worker_som = KohonenSOM(total_nodes=100, node_size=1, update_iterations=maxitr)
 
 sampled_length = 0
 sample_iter = 100
