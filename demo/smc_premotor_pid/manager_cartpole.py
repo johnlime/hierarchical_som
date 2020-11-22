@@ -25,6 +25,8 @@ manager_som = ManagerSOM(total_nodes = 100,
 env = gym.make("CartPole-v1")
 obs = env.reset()
 
+tmp_cum_return = 0
+tmp_epoch_count = 0
 for epoch in range(manager_maxitr):
     total_return = 0
 
@@ -48,7 +50,7 @@ for epoch in range(manager_maxitr):
         # Pseudo-PD control
         k_p = 1.0
         k_d = 0.05
-        action = k_p * (som.w[action_index][0] - obs[0]) + k_d * (som.w[action_index][1] - obs[1])
+        action = k_p * (worker_som.w[action_index][0] - obs[0]) + k_d * (worker_som.w[action_index][1] - obs[1])
         if (action > 0): action = 1
         else: action = 0
 
@@ -69,8 +71,14 @@ for epoch in range(manager_maxitr):
         if done:
             print("Episode finished after {} timesteps".format(t+1))
             print(epoch, total_return)
+
+            tmp_cum_return += total_return
+            tmp_epoch_count += 1
+
             if epoch % 99 == 0:
-                cumulative_return.append(total_return)
+                cumulative_return.append(tmp_cum_return / tmp_epoch_count)
+                tmp_cum_return = 0
+                tmp_epoch_count = 0
             break
 
     obs = env.reset()

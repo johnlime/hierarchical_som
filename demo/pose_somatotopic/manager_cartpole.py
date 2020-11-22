@@ -25,6 +25,8 @@ manager_som = ManagerSOM(total_nodes = 100,
 env = gym.make("CartPole-v1")
 obs = env.reset()
 
+tmp_cum_return = 0
+tmp_epoch_count = 0
 for epoch in range(manager_maxitr):
     total_return = 0
 
@@ -62,8 +64,14 @@ for epoch in range(manager_maxitr):
         if done:
             print("Episode finished after {} timesteps".format(t+1))
             print(epoch, total_return)
+
+            tmp_cum_return += total_return
+            tmp_epoch_count += 1
+
             if epoch % 99 == 0:
-                cumulative_return.append(total_return)
+                cumulative_return.append(tmp_cum_return / tmp_epoch_count)
+                tmp_cum_return = 0
+                tmp_epoch_count = 0
             break
 
     obs = env.reset()
