@@ -5,3 +5,6 @@
 3. Hierarchical structure could be used for more complex sequential tasks
 
 3.1. Can SOM be adapted to deal with unstable dynamical systems? (1)
+
+4. May be a good idea to attmept implemention of FALCON for reference
+
