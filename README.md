@@ -5,9 +5,9 @@ Attempts of modeling functionalities of supplementary motor cortex, premotor cor
 
 ## Background
 
-Understanding the functionalities of primary motor cortex and premotor cortex, mainly supplementary motor cortex or supplementary motor area (SMA), of the human brain has been a major focus of research in the field of neuroscience, which has provided data regarding synaptic activation regions corresponding to sensory inputs and motor outputs, stemming numerous hypotheses. We focus on the hypothesis that the SMA manages the sequence in which the motor neurons within the primary motor cortex are activated in order to execute diverse tasks.
+Understanding the functionalities of primary motor cortex and premotor cortex, mainly supplementary motor cortex or supplementary motor area (SMA), of the human brain has been a major focus of research in the field of neuroscience, which has provided data regarding synaptic activation regions corresponding to sensory inputs and motor outputs, stemming numerous hypotheses[0, 1]. We focus on the hypothesis that the SMA manages the sequence in which the motor neurons within the primary motor cortex are activated in order to execute diverse tasks.
 
-Recent preliminary works mainly focus on modeling using gradient-based deep neural networks. While these methods succeed in accurately mimicking and predicting the motor output given a synaptic input, they do not represent the self organization and clustering of data known to exist in both of the cortices. We attempt to utilize Kohonen's self organizing maps and have agents learn tasks using hierarchical reinforcement learning in a similar fashion as such seen in motor cortices.
+Recent preliminary works mainly focus on modeling using gradient-based deep neural networks [2]. While these methods succeed in accurately mimicking and predicting the motor output given a synaptic input, they do not represent the self organization and clustering of data known to exist in both of the cortices [0]. We attempt to utilize Kohonen's self organizing maps and have agents learn tasks using hierarchical reinforcement learning in a similar fashion as such seen in motor cortices.
 
 ## Approach
 
@@ -60,3 +60,19 @@ https://github.com/johnlime/hierarchical_som/blob/master/demo/Visualization.ipyn
 - Can SOM be adapted to deal with unstable dynamical systems?
 
 - May be a good idea to attempt implementation of FALCON for reference
+
+# References
+
+[0] Michael S.A. Graziano, Tyson N. Aflalo,
+Mapping Behavioral Repertoire onto the Cortex,
+Neuron,
+Volume 56, Issue 2,
+2007,
+Pages 239-251,
+ISSN 0896-6273,
+https://doi.org/10.1016/j.neuron.2007.09.013.
+
+[1] Nachev, P., Kennard, C. & Husain, M. Functional role of the supplementary and pre-supplementary motor areas. Nat Rev Neurosci 9, 856–869 (2008). https://doi.org/10.1038/nrn2478
+
+[2] Akbar, M. N., Yarossi, M., Martinez-Gost, M., Sommer, M. A., Dannhauer, M., Rampersad, S., ... & Erdoğmuş, D. (2020). Mapping Motor Cortex Stimulation to Muscle Responses: A Deep Neural Network Modeling Approach. arXiv preprint arXiv:2002.06250.
+https://doi.org/10.1145/3389189.3389203
