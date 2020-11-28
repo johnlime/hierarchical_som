@@ -61,7 +61,7 @@ https://github.com/johnlime/hierarchical_som/blob/master/demo/Visualization.ipyn
 
 - May be a good idea to attempt implementation of FALCON for reference
 
-# References
+## References
 
 [0] Michael S.A. Graziano, Tyson N. Aflalo,
 Mapping Behavioral Repertoire onto the Cortex,
