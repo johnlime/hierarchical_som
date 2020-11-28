@@ -41,6 +41,7 @@ Hierarchical self organizing map with a similar structure as the aforementioned 
 
 ## Current Poor Results
 
+https://github.com/johnlime/hierarchical_som/blob/master/demo/Visualization.ipynb
 
 ## Analysis of the Current Poor Results
 
