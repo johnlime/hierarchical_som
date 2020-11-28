@@ -5,7 +5,7 @@ Attempts of modeling functionalities of supplementary motor cortex, premotor cor
 
 ## Background
 
-Understanding the functionalities of primary motor cortex and premotor cortex, mainly supplementary motor cortex or supplementary motor area (SMA), of the human brain has been a major focus of research in the field of neuroscience, which has provided data regarding synaptic activation regions corresponding to sensory inputs and motor outputs, stemming numerous hypotheses[0, 1]. We focus on the hypothesis that the SMA manages the sequence in which the motor neurons within the primary motor cortex are activated in order to execute diverse tasks.
+Understanding the functionalities of primary motor cortex and premotor cortex, mainly supplementary motor cortex or supplementary motor area (SMA), of the human brain has been a major focus of research in the field of neuroscience, which has provided data regarding synaptic activation regions corresponding to sensory inputs and motor outputs, stemming numerous hypotheses [0, 1]. We focus on the hypothesis that the SMA manages the sequence in which the motor neurons within the primary motor cortex are activated in order to execute diverse tasks.
 
 Recent preliminary works mainly focus on modeling using gradient-based deep neural networks [2]. While these methods succeed in accurately mimicking and predicting the motor output given a synaptic input, they do not represent the self organization and clustering of data known to exist in both of the cortices [0]. We attempt to utilize Kohonen's self organizing maps and have agents learn tasks using hierarchical reinforcement learning in a similar fashion as such seen in motor cortices.
 
