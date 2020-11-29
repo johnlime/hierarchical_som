@@ -35,10 +35,11 @@ class ManagerSOM (KohonenSOM):
     def get_action(self, x):
         return torch.argmax(self.w[self.select_winner(x)][-self.worker_som.total_nodes:], dim=0)
 
+    def get_value(self, x):
+        return torch.max(self.w[self.select_winner(x)][-self.worker_som.total_nodes:])[0]
+    
     def get_softmax(self, x):
-        return torch.max(f.softmax(self.w[
-            self.select_winner(x)
-            ][-self.worker_som.total_nodes:]))[0]
+        return f.softmax(self.w[self.select_winner(x)][-self.worker_som.total_nodes:])[torch.argmax(x)]
 
     def action_q_learning(self,
                         current_state_index = None,
@@ -60,7 +61,7 @@ class ManagerSOM (KohonenSOM):
         # update q-value using new reward and largest est. prob of action
         self.w[winner_c][self.state_som.total_nodes + action_index] += lr * (
             reward
-            + gamma * self.get_softmax(next_state_space)
+            + gamma * self.get_value(next_state_space)
             - self.w[winner_c][self.state_som.total_nodes + action_index]
             )
 
