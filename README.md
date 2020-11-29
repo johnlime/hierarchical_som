@@ -35,7 +35,7 @@ Preliminary works mainly focus on modeling using gradient-based deep neural netw
 
   - A separate layer for mapping the state space is trained by running a random policy
   
-  - Manger's synaptic weights are composed of the q-values of the worker's nodes concatenated with a one hot vector representing the activated node of the separate state layer.
+  - Manger's synaptic weights are composed of the q-values of the worker's nodes concatenated with a one hot vector or position representing the activated node of the separate state layer.
   
   - Q-values representing the worker's nodes are trained using Q-learning.
 
@@ -46,6 +46,41 @@ Preliminary works mainly focus on modeling using gradient-based deep neural netw
 - Worker layer maps the appropriate reference signal for the PID controller instead of the action space.
 
 - PID control is used for lower-level (premotor and primary motor cortex) control in order for less complication of the problem
+
+## Dependencies
+
+- PyTorch
+- Gym
+
+## Running demo
+All of the demonstrations are for the cartpole-v1 task in OpenAI Gym
+
+1. Clone repository
+
+2. Set current directory to the project path
+```
+cd hierarchical_som
+```
+
+3. Set `PYTHONPATH` to current directory
+```
+export PYTHONPATH=$PWD
+```
+
+4. Train worker layer and state map
+```
+python3 demo/<MODEL_NAME>/cartpole.py
+```
+
+5. Train manager layer using one-hot vectors for worker node representation
+```
+python3 demo/<MODEL_NAME>/manager_cartpole.py
+```
+
+Alternatively, it is possible to use position as worker node representation
+```
+python3 demo/<MODEL_NAME>/manager_cartpole_position.py
+```
 
 ## Current Poor Results
 
