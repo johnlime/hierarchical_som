@@ -34,6 +34,9 @@ class ManagerSOMPosition (KohonenSOM):
 
     def get_action(self, x):
         return torch.argmax(self.w[self.select_winner(x)][-self.worker_som.total_nodes:], dim=0)
+    
+    def get_value(self, x):
+        return torch.max(self.w[self.select_winner(x)][-self.worker_som.total_nodes:])[0]
 
     def get_softmax(self, x):
         return torch.max(f.softmax(self.w[
@@ -54,7 +57,7 @@ class ManagerSOMPosition (KohonenSOM):
         # update q-value using new reward and largest est. prob of action
         self.w[winner_c][2 + action_index] += lr * (
             reward
-            + gamma * self.get_softmax(next_state_position)
+            + gamma * self.get_value(next_state_position)
             - self.w[winner_c][2 + action_index]
             )
 

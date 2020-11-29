@@ -87,15 +87,21 @@ python3 demo/<MODEL_NAME>/manager_cartpole_position.py
 
 ## Current Poor Results
 
-[A] https://github.com/johnlime/hierarchical_som/blob/master/demo/Visualization.ipynb
+(A) https://github.com/johnlime/hierarchical_som/blob/master/demo/Visualization.ipynb
 
-[B] https://github.com/johnlime/hierarchical_som/blob/master/demo/NavigationTask.ipynb
+(B) https://github.com/johnlime/hierarchical_som/blob/master/demo/Hierarchical%20Self%20Organizing%20Map.ipynb
+Initial testing of the SMC-Premotor-PID model, where PID is replaced with linear locomotion
 
-[C] https://github.com/johnlime/hierarchical_som/blob/master/demo/Hierarchical%20Self%20Organizing%20Map.ipynb
+(C) https://github.com/johnlime/hierarchical_som/blob/master/demo/NavigationTask%20w%20ModifiedManagerSOM.ipynb
+Attempts to replicate (B) by modifying ManagerSOM
 
 ## Analysis of the Current Poor Results
 
 - **Using an approximation of state and action spaces may not be appropriate when the task is to arrive to an unstable fixed point.**
+
+  - Better performance when the Bellman equation is modified to utilize max_a Q(s, a) instead of max_a Q(s', a)
+  
+  - Clustering one hot vectors of state layer leads to significant decrease in performance
 
 - Can SOM be adapted to deal with unstable dynamical systems?
 
