@@ -87,11 +87,15 @@ python3 demo/<MODEL_NAME>/manager_cartpole_position.py
 
 ## Current Poor Results
 
-https://github.com/johnlime/hierarchical_som/blob/master/demo/Visualization.ipynb
+[A] https://github.com/johnlime/hierarchical_som/blob/master/demo/Visualization.ipynb
+
+[B] https://github.com/johnlime/hierarchical_som/blob/master/demo/NavigationTask.ipynb
+
+[C] https://github.com/johnlime/hierarchical_som/blob/master/demo/Hierarchical%20Self%20Organizing%20Map.ipynb
 
 ## Analysis of the Current Poor Results
 
-- Using an approximation of state and action spaces may not be appropriate when the task is to arrive to an unstable fixed point.
+- **Using an approximation of state and action spaces may not be appropriate when the task is to arrive to an unstable fixed point.**
 
 - Can SOM be adapted to deal with unstable dynamical systems?
 
