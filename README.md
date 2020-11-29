@@ -51,6 +51,9 @@ Preliminary works mainly focus on modeling using gradient-based deep neural netw
 
 - PyTorch
 - Gym
+- Numpy
+- Pickle
+- Random
 
 ## Running demo
 All of the demonstrations are for the cartpole-v1 task in OpenAI Gym
