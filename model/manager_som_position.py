@@ -34,7 +34,7 @@ class ManagerSOMPosition (KohonenSOM):
 
     def get_action(self, x):
         return torch.argmax(self.w[self.select_winner(x)][-self.worker_som.total_nodes:], dim=0)
-    
+
     def get_value(self, x):
         return torch.max(self.w[self.select_winner(x)][-self.worker_som.total_nodes:])[0]
 
@@ -76,3 +76,40 @@ class ManagerSOMPosition (KohonenSOM):
 
     def update(self, x=None, t=None, htype=0):
         raise NameError('Use action_q_learning() instead of update()')
+
+
+
+class ManagerSOMPositionAllNeighbor (ManagerSOMPosition):
+    def action_q_learning(self,
+                        current_state_position = None,
+                        action_index = None,
+                        reward = 0,
+                        next_state_position = None,
+                        t = None,
+                        htype = 0,
+                        lr = 0.9,
+                        gamma = 0.9):
+        winner_c = self.select_winner(current_state_position)
+
+        # update q-value using new reward and largest est. prob of action
+        self.w[winner_c][2 + action_index] += lr * (
+            reward
+            + gamma * self.get_value(next_state_position)
+            - self.w[winner_c][2 + action_index]
+            )
+
+        # update weights by neighboring both the state space and the rewards
+        target_weights = torch.empty(2 + self.worker_som.total_nodes)
+        target_weights[:2] = current_state_position
+        target_weights[2:] = self.w[winner_c][2:]
+        if htype==0:
+            self.w += self.h0(winner_c, t) * (
+                target_weights
+                - self.w
+                )
+
+        elif htype==1:
+            self.w += self.h1(winner_c, t) * (
+                target_weights
+                - self.w
+                )

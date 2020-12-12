@@ -41,11 +41,6 @@ for epoch in range(manager_maxitr):
         else:
             action_index = random.randrange(worker_som.total_nodes)
 
-        if worker_som.w[action_index][0] >= 0.5:
-            action = 1
-        else:
-            action = 0
-
         # Pseudo-PD control
         k_p = 1.0
         k_d = 0.05
