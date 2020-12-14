@@ -57,11 +57,12 @@ SOM-based algorithms additionally has a better visualization scheme than the fee
 We compare the performance of all of the aforementioned models using the two tasks below.
 
 - NavigationTask
+
   - An environment where an agent controlled by such has to navigate itself from one point to another.
 
   - Rewards are generated every timestep as a negative value of the distance between the goal and the agent's positions
 
-  - Cartpole-v1 task in OpenAI Gym
+- Cartpole-v1 task in OpenAI Gym
 
 In addition to this, we observe the effect of training both sensory cognition and motor generation modules concurrently as opposed to pre-training the sensory cognition module and training the motor generation module afterwords. This is in consideration of the concept of affordance [6], which hypothesizes that both modules are structurally and functionally intertwined with each other and are involved in the decision making process of the agent in question.
 
