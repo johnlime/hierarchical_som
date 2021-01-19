@@ -32,10 +32,10 @@ class NavigationTaskV2():
     def step(self, target):
         step_vector = (target - self.current_position) / torch.sqrt(torch.sum((target - self.current_position) ** 2))
         optimal_vector = (self.goal - self.current_position) / torch.sqrt(torch.sum((self.goal - self.current_position) ** 2))
-        
-        step_radian = asin(step_vector[1]) # positive or negative radian
-        optimal_radian = asin(optimal_vector[1])
-        if acos(step_vector[2]) < 0:
+
+        step_radian = math.asin(step_vector[1]) # positive or negative radian
+        optimal_radian = math.asin(optimal_vector[1])
+        if math.acos(step_vector[0]) < 0:
             step_radian += step_radian / abs(step_radian) * math.pi
             optimal_radian += optimal_radian / abs(optimal_radian) * math.pi
 
