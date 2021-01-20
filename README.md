@@ -61,6 +61,12 @@ We compare the performance of all of the aforementioned models using the two tas
   - An environment where an agent controlled by such has to navigate itself from one point to another.
 
   - Rewards are generated every timestep as a negative value of the distance between the goal and the agent's positions
+  
+- NavigationTaskV2
+
+  - Same as NavigationTask, but the reward are calculated using the absolute value of the radian difference between the vector pointing from the current position to the target position, and the vector of the action taken in the current step.
+  
+  - Rewards' range is standardized to have the range: `[-math.pi, math.pi]`
 
 - Cartpole-v1 task in OpenAI Gym
 
@@ -108,15 +114,19 @@ python3 demo/<MODEL_NAME>/manager_cartpole_position.py
 
 (A) https://github.com/johnlime/hierarchical_som/blob/master/demo/Visualization.ipynb
 
-- Visualization of both models tested on Cartpole-v1
+- Visualization of both models (including both one-hot vector based and position based state space representations) tested on Cartpole-v1
 
 (B) https://github.com/johnlime/hierarchical_som/blob/master/demo/NavigationTask%20w%20ModifiedManagerSOM.ipynb
 
-- Visualization of both models tested on NavigationTask.
+- Visualization of both one-hot vector based and position based state space representation of the SMC-Premotor-PID Model tested on NavigationTask.
 
-- Attempts to replicate (C) by modifying ManagerSOM.
+- Attempts to replicate (C) by modifying the bellman function for Q-learning in ManagerSOM.
 
 - Performance of one-hot-vector-based selection and position-based selection are compared
+
+(B-2) https://github.com/johnlime/hierarchical_som/blob/master/demo/NavigationTaskV2%20w%20ManagerSOM.ipynb
+
+- Visualization of the position-based state space representation of the SMC-Premotor-PID Model using NavigationTaskV2
 
 (C) https://github.com/johnlime/hierarchical_som/blob/master/demo/Hierarchical%20Self%20Organizing%20Map.ipynb
 
@@ -134,7 +144,15 @@ python3 demo/<MODEL_NAME>/manager_cartpole_position.py
 
 - Better performance when the Bellman equation is modified to utilize max_a Q(s, a) instead of max_a Q(s', a); (A)
 
-- Clustering one hot vectors of state layer leads to significant decrease in performance compared to clustering positions of each nodes; (B)
+  - It should be noted that the similar results could be seen with NavigationTask
+  
+  - The original version of the model, which had no changes to the Bellman equation, led to the model's inability to learn the solution of the task.
+  
+- **The problem regarding the Bellman equation seen in (A) can be resolved with a better representation of the reward function (B-2)**
+
+  - SMC-Premotor-PID model was successfully able to produce good results for navigation an agent from one point to another using NavigationTaskV2
+
+- Clustering one hot vectors of state layer leads to significant decrease in performance compared to clustering positions of each nodes; (B-1; B-2)
 
 - Implementations with affordance taken into consideration (A; D-1; D-2)
 
