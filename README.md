@@ -116,7 +116,7 @@ python3 demo/<MODEL_NAME>/manager_cartpole_position.py
 
 - Visualization of both models (including both one-hot vector based and position based state space representations) tested on Cartpole-v1
 
-(B) https://github.com/johnlime/hierarchical_som/blob/master/demo/NavigationTask%20w%20ModifiedManagerSOM.ipynb
+(B-1) https://github.com/johnlime/hierarchical_som/blob/master/demo/NavigationTask%20w%20ModifiedManagerSOM.ipynb
 
 - Visualization of both one-hot vector based and position based state space representation of the SMC-Premotor-PID Model tested on NavigationTask.
 
