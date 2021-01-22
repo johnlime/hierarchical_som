@@ -115,7 +115,7 @@ for epoch in range(maxitr):
 
 
 plt.plot(np.linspace(0, len(cumulative_return), num = len(cumulative_return)), np.array(cumulative_return), marker='.', linestyle='-', color='blue')
-plt.savefig("data/smc_premotor_pid/cartpole_affordance_returns.png")
+plt.savefig("data/smc_premotor_pid/cartpole/cartpole_affordance_returns.png")
 
-filehandler = open("data/smc_premotor_pid/affordance_wsm.obj", 'wb')
+filehandler = open("data/smc_premotor_pid/cartpole/affordance_wsm.obj", 'wb')
 pickle.dump([worker_som, state_som, manager_som], filehandler)

@@ -61,11 +61,11 @@ We compare the performance of all of the aforementioned models using the two tas
   - An environment where an agent controlled by such has to navigate itself from one point to another.
 
   - Rewards are generated every timestep as a negative value of the distance between the goal and the agent's positions
-  
+
 - NavigationTaskV2
 
   - Same as NavigationTask, but the reward are calculated using the absolute value of the radian difference between the vector pointing from the current position to the target position, and the vector of the action taken in the current step.
-  
+
   - Rewards' range is standardized to have the range: `[-math.pi, math.pi]`
 
 - Cartpole-v1 task in OpenAI Gym
@@ -97,17 +97,17 @@ export PYTHONPATH=$PWD
 
 4. Train worker layer and state map
 ```
-python3 demo/<MODEL_NAME>/cartpole.py
+python3 demo/<MODEL_NAME>/cartpole/cartpole.py
 ```
 
 5. Train manager layer using one-hot vectors for worker node representation
 ```
-python3 demo/<MODEL_NAME>/manager_cartpole.py
+python3 demo/<MODEL_NAME>/cartpole/manager_cartpole.py
 ```
 
 Alternatively, it is possible to use position as worker node representation
 ```
-python3 demo/<MODEL_NAME>/manager_cartpole_position.py
+python3 demo/<MODEL_NAME>/cartpole/manager_cartpole_position.py
 ```
 
 ## Current (Poor) Results
@@ -132,11 +132,11 @@ python3 demo/<MODEL_NAME>/manager_cartpole_position.py
 
 - Initial testing of the SMC-Premotor-PID model, where PID is replaced with linear locomotion on NavigationTask
 
-(D-1) https://github.com/johnlime/hierarchical_som/blob/master/data/smc_premotor_pid/cartpole_affordance_returns.png
+(D-1) https://github.com/johnlime/hierarchical_som/blob/master/data/smc_premotor_pid/cartpole/cartpole_affordance_returns.png
 
 - Training returns of implementation of affordance using SMC-Premotor-PID model on Cartpole-v1
 
-(D-2) https://github.com/johnlime/hierarchical_som/blob/master/data/smc_premotor_pid/cartpole_affordance_all_neighbor_returns.png
+(D-2) https://github.com/johnlime/hierarchical_som/blob/master/data/smc_premotor_pid/cartpole/cartpole_affordance_all_neighbor_returns.png
 
 - Same as (D-1), but weights representing both state SOM positions and q-values are updated
 
@@ -145,9 +145,9 @@ python3 demo/<MODEL_NAME>/manager_cartpole_position.py
 - Better performance when the Bellman equation is modified to utilize max_a Q(s, a) instead of max_a Q(s', a); (A)
 
   - It should be noted that the similar results could be seen with NavigationTask
-  
+
   - The original version of the model, which had no changes to the Bellman equation, led to the model's inability to learn the solution of the task.
-  
+
 - **The problem regarding the Bellman equation seen in (A) can be resolved with a better representation of the reward function (B-2)**
 
   - SMC-Premotor-PID model was successfully able to produce good results for navigation an agent from one point to another using NavigationTaskV2
