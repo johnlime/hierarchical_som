@@ -140,7 +140,7 @@ python3 demo/<MODEL_NAME>/cartpole/manager_cartpole_position.py
 
 - Same as (D-1), but weights representing both state SOM positions and q-values are updated
 
-(E) https://github.com/johnlime/hierarchical_som/blob/master/data/smc_premotor_pid/bipedal_walker/affordance_hsom_controller.png
+(E) https://github.com/johnlime/hierarchical_som/blob/master/data/smc_premotor_pid/bipedal_walker/affordance_controller.png
 
 - Dry running SMC-Premotor-PID model on BipedalWalker-v2
 
