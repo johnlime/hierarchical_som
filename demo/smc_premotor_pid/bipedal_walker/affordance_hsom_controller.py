@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 """
 Hyperparameters
 """
-maxitr = 10 ** 4
+maxitr = 2 * 10 ** 4
 maxtime = 10 ** 3
 gamma = 0.99
 epsilon = 0.3
@@ -72,7 +72,7 @@ for epoch in range(maxitr):
             action_index = random.randrange(worker_som.total_nodes)
 
         # PD control
-        # Gains obtained via CMA-ES searching
+        # Gains estimated via CMA-ES
         k_p = 2.175604023818439
         k_d = 1.2390217586889263
         action[0] = k_p * (worker_som.w[action_index][0] - obs[4]) + k_d * obs[5]
@@ -115,6 +115,7 @@ for epoch in range(maxitr):
             tmp_epoch_count += 1
 
             if epoch % 99 == 0:
+                print(epoch)
                 cumulative_return.append(tmp_cum_return / tmp_epoch_count)
                 tmp_cum_return = 0
                 tmp_epoch_count = 0
