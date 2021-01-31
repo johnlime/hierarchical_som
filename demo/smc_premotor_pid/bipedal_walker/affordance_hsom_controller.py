@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 """
 Hyperparameters
 """
-maxitr = 5 * 10 ** 3
+maxitr = 10 ** 4
 maxtime = 10 ** 3
 gamma = 0.99
 epsilon = 0.3
@@ -19,7 +19,7 @@ epsilon = 0.3
 """
 Models
 """
-worker_som = KohonenSOM(total_nodes=100, node_size=8, update_iterations=maxitr)
+worker_som = KohonenSOM(total_nodes=100, node_size=4, update_iterations=maxitr)
 state_som = KohonenSOM(total_nodes=100, node_size=24, update_iterations=maxitr)
 manager_som = ManagerSOMPosition(total_nodes = 100,
                         state_som = state_som,
@@ -31,7 +31,7 @@ Sensor field online training pool
 """
 sampled_length = 0
 sample_iter = maxtime * maxitr
-worker_pool = torch.empty(sample_iter * 200, 8)
+worker_pool = torch.empty(sample_iter * 200, 4)
 state_pool = torch.empty(sample_iter * 200, 24)
 action = torch.empty(4)
 
@@ -55,8 +55,10 @@ for epoch in range(maxitr):
     for t in range(0, maxtime):
         # env.render()
         # sample observations from environment
-        worker_pool[sampled_length][:4] = torch.tensor(obs[4:8])
-        worker_pool[sampled_length][4:] = torch.tensor(obs[9:13])
+        worker_pool[sampled_length][0] = torch.tensor(obs[4])
+        worker_pool[sampled_length][1] = torch.tensor(obs[6])
+        worker_pool[sampled_length][2] = torch.tensor(obs[9])
+        worker_pool[sampled_length][3] = torch.tensor(obs[11])
         state_pool[sampled_length] = torch.tensor(obs)
         sampled_length += 1
 
@@ -69,13 +71,14 @@ for epoch in range(maxitr):
         else:
             action_index = random.randrange(worker_som.total_nodes)
 
-        # Pseudo-PD control
-        k_p = 1.0
-        k_d = 0.05
-        action[0] = k_p * (worker_som.w[action_index][0] - obs[4]) + k_d * (worker_som.w[action_index][1] - obs[5])
-        action[1] = k_p * (worker_som.w[action_index][2] - obs[6]) + k_d * (worker_som.w[action_index][3] - obs[7])
-        action[2] = k_p * (worker_som.w[action_index][4] - obs[9]) + k_d * (worker_som.w[action_index][5] - obs[10])
-        action[3] = k_p * (worker_som.w[action_index][6] - obs[11]) + k_d * (worker_som.w[action_index][7] - obs[12])
+        # PD control
+        # Gains obtained via CMA-ES searching
+        k_p = 2.175604023818439
+        k_d = 1.2390217586889263
+        action[0] = k_p * (worker_som.w[action_index][0] - obs[4]) + k_d * obs[5]
+        action[1] = k_p * (worker_som.w[action_index][1] - obs[6]) + k_d * obs[7]
+        action[2] = k_p * (worker_som.w[action_index][2] - obs[9]) + k_d * obs[10]
+        action[3] = k_p * (worker_som.w[action_index][3] - obs[11]) + k_d * obs[12]
 
         for i in range(4):
             if action[i] > 1:
