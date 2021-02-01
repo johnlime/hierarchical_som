@@ -4,7 +4,7 @@ import numpy as np
 import pickle
 import random
 from model.kohonen_som import KohonenSOM
-from model.manager_som_position import ManagerSOMPosition
+from model.manager_som_position import ManagerSOMPositionAllNeighbor
 
 import matplotlib.pyplot as plt
 
@@ -21,7 +21,7 @@ Models
 """
 worker_som = KohonenSOM(total_nodes=100, node_size=4, update_iterations=maxitr)
 state_som = KohonenSOM(total_nodes=100, node_size=24, update_iterations=maxitr)
-manager_som = ManagerSOMPosition(total_nodes = 100,
+manager_som = ManagerSOMPositionAllNeighbor(total_nodes = 100,
                         state_som = state_som,
                         worker_som = worker_som,
                         update_iterations=maxitr)
@@ -125,7 +125,7 @@ for epoch in range(maxitr):
 
 
 plt.plot(np.linspace(0, len(cumulative_return), num = len(cumulative_return)), np.array(cumulative_return), marker='.', linestyle='-', color='blue')
-plt.savefig("data/smc_premotor_pid/bipedal_walker/affordance_controller.png")
+plt.savefig("data/smc_premotor_pid/bipedal_walker/affordance_controller_all_neighbors.png")
 
-filehandler = open("data/smc_premotor_pid/bipedal_walker/affordance_wsm.obj", 'wb')
+filehandler = open("data/smc_premotor_pid/bipedal_walker/affordance_wsm_all_neighbors.obj", 'wb')
 pickle.dump([worker_som, state_som, manager_som], filehandler)
