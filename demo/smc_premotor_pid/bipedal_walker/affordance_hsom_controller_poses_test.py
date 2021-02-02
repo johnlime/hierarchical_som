@@ -4,7 +4,7 @@ import numpy as np
 import pickle
 import random
 
-import matplotlib.pyplot as plt
+import gym
 
 """
 Hyperparameters
@@ -27,7 +27,7 @@ tmp_epoch_count = 0
 """
 Testing
 """
-env = BipedalWalkerPoses()
+env = BipedalWalkerPoses() #gym.make("BipedalWalker-v2")
 obs = env.reset()
 
 total_return = 0
@@ -42,12 +42,24 @@ for action_index in range(state_som.total_nodes):
 
         # PD control
         # Gains estimated via CMA-ES
-        k_p = 2.175604023818439
-        k_d = 1.2390217586889263
-        action[0] = k_p * (worker_som.w[action_index][0] - obs[4]) + k_d * obs[5]
-        action[1] = k_p * (worker_som.w[action_index][1] - obs[6]) + k_d * obs[7]
-        action[2] = k_p * (worker_som.w[action_index][2] - obs[9]) + k_d * obs[10]
-        action[3] = k_p * (worker_som.w[action_index][3] - obs[11]) + k_d * obs[12]
+        # k_p = 2.175604023818439
+        # k_d = 1.2390217586889263
+        # action[0] = k_p * (worker_som.w[action_index][0] - obs[4]) + k_d * obs[5]
+        # action[1] = k_p * (worker_som.w[action_index][1] - obs[6]) + k_d * obs[7]
+        # action[2] = k_p * (worker_som.w[action_index][2] - obs[9]) + k_d * obs[10]
+        # action[3] = k_p * (worker_som.w[action_index][3] - obs[11]) + k_d * obs[12]
+
+        x = [-4.466573029677661, -4.03573001114622, -1.6148779980553227, 1.5447829259176653, -8.703999925951154, 6.205414925905666, -12.92986077092209, 0.3836256484321816]
+        k_p = []
+        k_d = []
+        for i in range(4):
+            k_p.append(x[i])
+            k_d.append(x[2 * i])
+
+        action[0] = k_p[0] * (worker_som.w[action_index][0] - obs[4]) + k_d[0] * obs[5]
+        action[1] = k_p[1] * (worker_som.w[action_index][1] - obs[6]) + k_d[1] * obs[7]
+        action[2] = k_p[2] * (worker_som.w[action_index][2] - obs[9]) + k_d[2] * obs[10]
+        action[3] = k_p[3] * (worker_som.w[action_index][3] - obs[11]) + k_d[3] * obs[12]
 
         for i in range(4):
             if action[i] > 1:
