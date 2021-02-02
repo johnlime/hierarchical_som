@@ -33,37 +33,36 @@ obs = env.reset()
 total_return = 0
 action = torch.empty(4)
 
-for t in range(0, maxtime):
-    env.render()
-    current_state_location = state_som.location[state_som.select_winner(obs)]
-    action_index = manager_som.get_action(current_state_location) # deterministic
+for action_index in range(state_som.total_nodes):
+    print(action_index)
+    for t in range(0, maxtime):
+        env.render()
+        # current_state_location = state_som.location[state_som.select_winner(obs)]
+        # action_index = manager_som.get_action(current_state_location) # deterministic
 
-    # PD control
-    # Gains estimated via CMA-ES
-    k_p = 2.175604023818439
-    k_d = 1.2390217586889263
-    action[0] = k_p * (worker_som.w[action_index][0] - obs[4]) + k_d * obs[5]
-    action[1] = k_p * (worker_som.w[action_index][1] - obs[6]) + k_d * obs[7]
-    action[2] = k_p * (worker_som.w[action_index][2] - obs[9]) + k_d * obs[10]
-    action[3] = k_p * (worker_som.w[action_index][3] - obs[11]) + k_d * obs[12]
+        # PD control
+        # Gains estimated via CMA-ES
+        k_p = 2.175604023818439
+        k_d = 1.2390217586889263
+        action[0] = k_p * (worker_som.w[action_index][0] - obs[4]) + k_d * obs[5]
+        action[1] = k_p * (worker_som.w[action_index][1] - obs[6]) + k_d * obs[7]
+        action[2] = k_p * (worker_som.w[action_index][2] - obs[9]) + k_d * obs[10]
+        action[3] = k_p * (worker_som.w[action_index][3] - obs[11]) + k_d * obs[12]
 
-    for i in range(4):
-        if action[i] > 1:
-            action[i] = 1
-        elif action[i] < -1:
-            action[i] = -1
-        else:
-            pass
+        for i in range(4):
+            if action[i] > 1:
+                action[i] = 1
+            elif action[i] < -1:
+                action[i] = -1
+            else:
+                pass
 
-    next_obs, reward, done, _ = env.step(action)
+        next_obs, _, _, _ = env.step(action)
+        obs = next_obs
 
-    next_state_location = state_som.location[state_som.select_winner(next_obs)]
-
-    total_return += reward
-    obs = next_obs
-
-    # if done:
-    #     print("Episode finished after {} timesteps".format(t+1))
-    #     break
+        # if done:
+        #     print("Episode finished after {} timesteps".format(t+1))
+        #     break
+    env.reset()
 
 env.close()
