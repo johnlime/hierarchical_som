@@ -43,7 +43,7 @@ SOM-based algorithms additionally has a better visualization scheme than the fee
 
   - Q-values representing the worker's nodes are trained using Q-learning.
 
-  - Since we found that updating only the weights representing the state space performs significantly better than both state space and q-values, weight vector segments containing only the state space are updated
+  - For Pose-Somatotopic Model, since we found that updating only the weights representing the state space performs significantly better than both state space and q-values, weight vector segments containing only the state space are updated
 
 ### SMC-Premotor-PID Model
 
@@ -52,6 +52,8 @@ SOM-based algorithms additionally has a better visualization scheme than the fee
 - Worker layer maps the appropriate reference signal for the PID controller instead of the action space.
 
 - PID control is used for lower-level (premotor and primary motor cortex) control in order for less complication of the problem
+
+- A variation of SMC-Premotor-PID model where both state space and q-values of neighboring nodes are updated is included
 
 ## Evaluation
 We compare the performance of all of the aforementioned models using the two tasks below.
@@ -140,7 +142,11 @@ python3 demo/<MODEL_NAME>/cartpole/manager_cartpole_position.py
 
 - Same as (D-1), but weights representing both state SOM positions and q-values are updated
 
-(E) https://github.com/johnlime/hierarchical_som/blob/master/data/smc_premotor_pid/bipedal_walker/affordance_controller.png
+(E-1) https://github.com/johnlime/hierarchical_som/blob/master/data/smc_premotor_pid/bipedal_walker/affordance_controller.png
+
+- Dry running SMC-Premotor-PID model on BipedalWalker-v2
+
+(E-2) https://github.com/johnlime/hierarchical_som/blob/master/data/smc_premotor_pid/bipedal_walker/affordance_controller_all_neighbors.png
 
 - Dry running SMC-Premotor-PID model on BipedalWalker-v2
 
