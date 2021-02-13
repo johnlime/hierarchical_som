@@ -9,7 +9,7 @@ import gym
 """
 Hyperparameters
 """
-maxtime = 10 ** 3
+maxtime = 10 ** 2
 
 """
 Models
