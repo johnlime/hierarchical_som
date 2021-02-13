@@ -36,8 +36,8 @@ class ManagerSOM (KohonenSOM):
         return torch.argmax(self.w[self.select_winner(x)][-self.worker_som.total_nodes:], dim=0)
 
     def get_value(self, x):
-        return torch.max(self.w[self.select_winner(x)][-self.worker_som.total_nodes:])[0]
-    
+        return torch.max(self.w[self.select_winner(x)][-self.worker_som.total_nodes:])
+
     def get_softmax(self, x):
         return f.softmax(self.w[self.select_winner(x)][-self.worker_som.total_nodes:])[torch.argmax(x)]
 

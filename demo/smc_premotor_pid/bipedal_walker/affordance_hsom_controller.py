@@ -46,7 +46,7 @@ tmp_epoch_count = 0
 Training
 """
 
-env = gym.make("BipedalWalker-v2")
+env = gym.make("BipedalWalker-v3")
 obs = env.reset()
 
 for epoch in range(maxitr):
@@ -55,6 +55,7 @@ for epoch in range(maxitr):
     for t in range(0, maxtime):
         # env.render()
         # sample observations from environment
+        print(sampled_length)
         worker_pool[sampled_length][0] = torch.tensor(obs[4])
         worker_pool[sampled_length][1] = torch.tensor(obs[6])
         worker_pool[sampled_length][2] = torch.tensor(obs[9])
@@ -77,7 +78,7 @@ for epoch in range(maxitr):
         # k_p = 2.175604023818439
         # k_d = 1.2390217586889263
 
-        x = [-4.466573029677661, -4.03573001114622, -1.6148779980553227, 1.5447829259176653, -8.703999925951154, 6.205414925905666, -12.92986077092209, 0.3836256484321816]
+        x = [-3.4585220237619447, -1.2463882751025859, -0.40804429102004913, -1.3837976627586788, 0.8323390040404808, -2.6143997385346505, -1.3816693812890346, 1.5268811815571184]
         k_p = []
         k_d = []
         for i in range(4):

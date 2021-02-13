@@ -30,13 +30,14 @@ class ManagerSOMPosition (KohonenSOM):
 
     def select_winner(self, x):
         # x must consist of the POSITION for current state indices
+        x = torch.tensor(x)
         return torch.argmin(torch.norm(torch.sqrt((x - self.w[:,:2]) ** 2), p=1, dim=1), dim=0)
 
     def get_action(self, x):
         return torch.argmax(self.w[self.select_winner(x)][-self.worker_som.total_nodes:], dim=0)
 
     def get_value(self, x):
-        return torch.max(self.w[self.select_winner(x)][-self.worker_som.total_nodes:])[0]
+        return torch.max(self.w[self.select_winner(x)][-self.worker_som.total_nodes:])
 
     def get_softmax(self, x):
         return torch.max(f.softmax(self.w[
