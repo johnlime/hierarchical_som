@@ -55,7 +55,6 @@ for epoch in range(maxitr):
     for t in range(0, maxtime):
         # env.render()
         # sample observations from environment
-        print(sampled_length)
         worker_pool[sampled_length][0] = torch.tensor(obs[4])
         worker_pool[sampled_length][1] = torch.tensor(obs[6])
         worker_pool[sampled_length][2] = torch.tensor(obs[9])

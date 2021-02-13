@@ -18,7 +18,6 @@ class KohonenSOM:
 
     def select_winner(self, x):
         x = torch.tensor(x)
-        print((x - self.w).size())
         return torch.argmin(torch.norm(torch.sqrt((x - self.w)**2), p=1, dim=1), dim=0)
 
     def sigma(self, t):
