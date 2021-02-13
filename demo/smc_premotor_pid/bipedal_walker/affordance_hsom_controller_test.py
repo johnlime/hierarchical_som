@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 """
 Hyperparameters
 """
-maxtime = 10 ** 2
+maxtime = 10 ** 3
 
 """
 Models
