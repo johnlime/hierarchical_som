@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 """
 Hyperparameters
 """
-maxtime = 10 ** 3
+maxtime = 10 ** 2
 
 """
 Models
@@ -27,7 +27,7 @@ tmp_epoch_count = 0
 """
 Testing
 """
-env = gym.make("BipedalWalker-v2")
+env = gym.make("BipedalWalker-v3")
 obs = env.reset()
 
 total_return = 0
