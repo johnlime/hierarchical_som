@@ -4,7 +4,7 @@ import numpy as np
 import pickle
 import random
 from model.kohonen_som import KohonenSOM
-from model.manager_som_position import ManagerSOMPosition
+from model.manager_som_position import ManagerSOMPositionAllNeighbor
 
 import matplotlib.pyplot as plt
 
@@ -21,7 +21,7 @@ Models
 """
 worker_som = KohonenSOM(total_nodes=100, node_size=4, update_iterations=maxitr)
 state_som = KohonenSOM(total_nodes=100, node_size=24, update_iterations=maxitr)
-manager_som = ManagerSOMPosition(total_nodes = 100,
+manager_som = ManagerSOMPositionAllNeighbor(total_nodes = 100,
                         state_som = state_som,
                         worker_som = worker_som,
                         update_iterations=maxitr)
@@ -77,7 +77,8 @@ for epoch in range(maxitr):
         # k_p = 2.175604023818439
         # k_d = 1.2390217586889263
 
-        x = [1.1856849882386575, 1.5903066105130703, 1.1236952114939938, 3.0433557288087694, -0.3027671732001401, 0.39535286688944876, -0.08675309470444716, 0.4490997629403532]
+        #x = [1.1856849882386575, 1.5903066105130703, 1.1236952114939938, 3.0433557288087694, -0.3027671732001401, 0.39535286688944876, -0.08675309470444716, 0.4490997629403532]
+        x = [0.7279744990992817, 17.209355964467495, 3.5072066403399726, 7.756348182130392, -1.2647041459426747, 0.04895833220978118, 0.04777929006662078, -3.059002385264768]
         k_p = []
         k_d = []
         for i in range(4):
@@ -139,7 +140,7 @@ for epoch in range(maxitr):
 
 
 plt.plot(np.linspace(0, len(cumulative_return), num = len(cumulative_return)), np.array(cumulative_return), marker='.', linestyle='-', color='blue')
-plt.savefig("data/smc_premotor_pid/bipedal_walker/affordance_controller.png")
+plt.savefig("data/smc_premotor_pid/bipedal_walker/affordance_controller_all_neighbors_v2.png")
 
-filehandler = open("data/smc_premotor_pid/bipedal_walker/affordance_wsm.obj", 'wb')
+filehandler = open("data/smc_premotor_pid/bipedal_walker/affordance_wsm_all_neighbors_v2.obj", 'wb')
 pickle.dump([worker_som, state_som, manager_som], filehandler)

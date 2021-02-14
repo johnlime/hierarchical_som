@@ -14,7 +14,7 @@ maxtime = 10 ** 2
 """
 Models
 """
-filehandler = open("data/smc_premotor_pid/bipedal_walker/affordance_wsm.obj", 'rb')
+filehandler = open("data/smc_premotor_pid/bipedal_walker/affordance_wsm_all_neighbors_v2.obj", 'rb')
 worker_som, state_som, manager_som = pickle.load(filehandler)
 
 """
@@ -49,7 +49,8 @@ for action_index in range(state_som.total_nodes):
         # action[2] = k_p * (worker_som.w[action_index][2] - obs[9]) + k_d * obs[10]
         # action[3] = k_p * (worker_som.w[action_index][3] - obs[11]) + k_d * obs[12]
 
-        x = [1.1856849882386575, 1.5903066105130703, 1.1236952114939938, 3.0433557288087694, -0.3027671732001401, 0.39535286688944876, -0.08675309470444716, 0.4490997629403532]
+        #x = [1.1856849882386575, 1.5903066105130703, 1.1236952114939938, 3.0433557288087694, -0.3027671732001401, 0.39535286688944876, -0.08675309470444716, 0.4490997629403532]
+        x = [0.7279744990992817, 17.209355964467495, 3.5072066403399726, 7.756348182130392, -1.2647041459426747, 0.04895833220978118, 0.04777929006662078, -3.059002385264768]
         k_p = []
         k_d = []
         for i in range(4):
