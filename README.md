@@ -43,7 +43,11 @@ SOM-based algorithms additionally has a better visualization scheme than the fee
 
   - Q-values representing the worker's nodes are trained using Q-learning.
 
-  - For Pose-Somatotopic Model, since we found that updating only the weights representing the state space performs significantly better than both state space and q-values, weight vector segments containing only the state space are updated
+  - A variation of the model where both state space and q-values of neighboring nodes are updated are included
+
+- Both sensory cognition and motor generation modules are trained concurrently.
+
+  - Consideration of the concept of affordance [6], which hypothesizes that both modules are structurally and functionally intertwined with each other and are involved in the decision making process of the agent in question.
 
 ### SMC-Premotor-PID Model
 
@@ -53,26 +57,18 @@ SOM-based algorithms additionally has a better visualization scheme than the fee
 
 - PID control is used for lower-level (premotor and primary motor cortex) control in order for less complication of the problem
 
-- A variation of SMC-Premotor-PID model where both state space and q-values of neighboring nodes are updated is included
-
 ## Evaluation
 We compare the performance of all of the aforementioned models using the two tasks below.
 
-- NavigationTask
+- NavigationTaskV2
 
   - An environment where an agent controlled by such has to navigate itself from one point to another.
 
-  - Rewards are generated every timestep as a negative value of the distance between the goal and the agent's positions
-
-- NavigationTaskV2
-
-  - Same as NavigationTask, but the reward are calculated using the absolute value of the radian difference between the vector pointing from the current position to the target position, and the vector of the action taken in the current step.
+  - Rewards are calculated using the absolute value of the radian difference between the vector pointing from the current position to the target position, and the vector of the action taken in the current step.
 
   - Rewards' range is standardized to have the range: `[-math.pi, math.pi]`
 
 - Cartpole-v1 task in OpenAI Gym
-
-In addition to this, we observe the effect of training both sensory cognition and motor generation modules concurrently as opposed to pre-training the sensory cognition module and training the motor generation module afterwords. This is in consideration of the concept of affordance [6], which hypothesizes that both modules are structurally and functionally intertwined with each other and are involved in the decision making process of the agent in question.
 
 ## Dependencies
 
@@ -118,57 +114,21 @@ python3 demo/<MODEL_NAME>/cartpole/manager_cartpole_position.py
 
 - Visualization of both models (including both one-hot vector based and position based state space representations) tested on Cartpole-v1
 
-(B-1) https://github.com/johnlime/hierarchical_som/blob/master/demo/NavigationTask%20w%20ModifiedManagerSOM.ipynb
-
-- Visualization of both one-hot vector based and position based state space representation of the SMC-Premotor-PID Model tested on NavigationTask.
-
-- Attempts to replicate (C) by modifying the bellman function for Q-learning in ManagerSOM.
-
-- Performance of one-hot-vector-based selection and position-based selection are compared
-
-(B-2) https://github.com/johnlime/hierarchical_som/blob/master/demo/NavigationTaskV2%20w%20ManagerSOM.ipynb
+(B) https://github.com/johnlime/hierarchical_som/blob/master/demo/NavigationTaskV2%20w%20ManagerSOM.ipynb
 
 - Visualization of the position-based state space representation of the SMC-Premotor-PID Model using NavigationTaskV2
 
-(C) https://github.com/johnlime/hierarchical_som/blob/master/demo/Hierarchical%20Self%20Organizing%20Map.ipynb
-
-- Initial testing of the SMC-Premotor-PID model, where PID is replaced with linear locomotion on NavigationTask
-
-(D-1) https://github.com/johnlime/hierarchical_som/blob/master/data/smc_premotor_pid/cartpole/cartpole_affordance_returns.png
-
-- Training returns of implementation of affordance using SMC-Premotor-PID model on Cartpole-v1
-
-(D-2) https://github.com/johnlime/hierarchical_som/blob/master/data/smc_premotor_pid/cartpole/cartpole_affordance_all_neighbor_returns.png
-
-- Same as (D-1), but weights representing both state SOM positions and q-values are updated
-
-(E-1) https://github.com/johnlime/hierarchical_som/blob/master/data/smc_premotor_pid/bipedal_walker/affordance_controller.png
+(C-1) https://github.com/johnlime/hierarchical_som/blob/master/data/smc_premotor_pid/bipedal_walker/affordance_controller.png
 
 - Dry running SMC-Premotor-PID model on BipedalWalker-v2
 
-(E-2) https://github.com/johnlime/hierarchical_som/blob/master/data/smc_premotor_pid/bipedal_walker/affordance_controller_all_neighbors.png
+(C-2) https://github.com/johnlime/hierarchical_som/blob/master/data/smc_premotor_pid/bipedal_walker/affordance_controller_all_neighbors.png
 
 - Dry running SMC-Premotor-PID model on BipedalWalker-v2
 
 ## Analysis of the Current Poor Results
 
-- Better performance when the Bellman equation is modified to utilize max_a Q(s, a) instead of max_a Q(s', a); (A)
-
-  - It should be noted that the similar results could be seen with NavigationTask
-
-  - The original version of the model, which had no changes to the Bellman equation, led to the model's inability to learn the solution of the task.
-
-- **The problem regarding the Bellman equation seen in (A) can be resolved with a better representation of the reward function (B-2)**
-
-  - SMC-Premotor-PID model was successfully able to produce good results for navigation an agent from one point to another using NavigationTaskV2
-
-- Clustering one hot vectors of state layer leads to significant decrease in performance compared to clustering positions of each nodes; (B-1; B-2)
-
-- Implementations with affordance taken into consideration (A; D-1; D-2)
-
-  - More stable convergence of return to a specific value during training than the alternatives
-
-  - Higher return during said convergence
+- SMC-Premotor-PID model was successfully able to produce good results for navigation an agent from one point to another using NavigationTaskV2 (B)
 
 - **Using an approximation of state and action spaces may not be appropriate when the task is to arrive to an unstable fixed point.** (A)
 
@@ -176,9 +136,7 @@ python3 demo/<MODEL_NAME>/cartpole/manager_cartpole_position.py
 
 ## Open Problem
 
-- Struggling to solve the pole-balancing problem. But is conceptualizing and controlling the cart good enough for this task? More "biological" tasks such as locomotion and inverse kinematics should be taken into consideration
-
-- Since the goal of the algorithm is to mimic the cerebral cortex, research results in that field should be taken into consideration for better understanding and engineering.
+- Struggling to solve the pole-balancing problem. But is conceptualizing and controlling the cart good enough for this task?
 
 ## References
 
