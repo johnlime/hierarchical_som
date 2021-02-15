@@ -80,3 +80,44 @@ class ManagerSOM (KohonenSOM):
 
     def update(self, x=None, t=None, htype=0):
         raise NameError('Use action_q_learning() instead of update()')
+
+class ManagerSOMAllNeighbor (ManagerSOM):
+    def action_q_learning(self,
+                        current_state_index = None,
+                        action_index = None,
+                        reward = 0,
+                        next_state_index = None,
+                        t = None,
+                        htype = 0,
+                        lr = 0.9,
+                        gamma = 0.9):
+        current_state_space = torch.zeros(self.state_som.total_nodes)
+        current_state_space[current_state_index] = 1
+
+        next_state_space = torch.zeros(self.state_som.total_nodes)
+        next_state_space[next_state_index] = 1
+
+        winner_c = self.select_winner(current_state_space)
+
+        # update q-value using new reward and largest est. prob of action
+        self.w[winner_c][self.state_som.total_nodes + action_index] += lr * (
+            reward
+            + gamma * self.get_value(next_state_space)
+            - self.w[winner_c][self.state_som.total_nodes + action_index]
+            )
+
+        # update weights by neighboring both the state space and the rewards
+        target_weights = torch.empty(self.state_som.total_nodes + self.worker_som.total_nodes)
+        target_weights[:self.state_som.total_nodes] = current_state_space
+        target_weights[-self.worker_som.total_nodes:] = self.w[winner_c][-self.worker_som.total_nodes:]
+        if htype==0:
+            self.w += self.h0(winner_c, t) * (
+                target_weights
+                - self.w
+                )
+
+        elif htype==1:
+            self.w += self.h1(winner_c, t) * (
+                target_weights
+                - self.w
+                )

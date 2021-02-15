@@ -32,7 +32,7 @@ for epoch in range(manager_maxitr):
 
     for t in range(0, maxtime):
 #         env.render()
-        current_state_location = state_som.location[state_som.select_winner(obs)]
+        current_state_location = state_som.location[state_som.select_winner(obs[1:])]
 
         # epsilon greedy
         if random.random() > epsilon:
@@ -48,7 +48,7 @@ for epoch in range(manager_maxitr):
 
         next_obs, reward, done, _ = env.step(action)
 
-        next_state_location = state_som.location[state_som.select_winner(next_obs)]
+        next_state_location = state_som.location[state_som.select_winner(next_obs[1:])]
 
         # online training
         manager_som.action_q_learning(
