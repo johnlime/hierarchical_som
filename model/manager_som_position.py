@@ -16,7 +16,7 @@ class ManagerSOMPosition (KohonenSOM):
     {current_state_indices, reward}
 
     Weight vector:
-    {current_state_indices, return_estimates_per_action}
+    {current_state_position, return_estimates_per_action}
     """
 
     def __init__(self, total_nodes = None, state_som = None, worker_som = None, update_iterations = 100):
