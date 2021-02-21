@@ -1,0 +1,3 @@
+[submodule "libraries/RlkitExtension"]
+	path = libraries/RlkitExtension
+	url = https://github.com/johnlime/RlkitExtension.git
