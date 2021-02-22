@@ -20,6 +20,7 @@ class SOMPPOTrainer(PPOTrainer):
     ):
         self.state_som = state_som
         self.worker_som = worker_som
+        self.epoch = 0
 
         super().__init__(
                 env,
@@ -37,14 +38,16 @@ class SOMPPOTrainer(PPOTrainer):
         )
 
     def train_from_torch(self, batch):
-        
+        """
+        (next_)observations: 2-dimensional position representation of state_som
+        actions: One-hot vector representation of worker_som
+        advantage: Advantage for each obs-action pairs
 
-        # obs = batch['observations']
-        # old_log_pi = batch['log_prob']
-        # advantage = batch['advantage']
-        # returns = batch['returns']
-        # actions = batch['actions']
-        #
-        # self._n_train_steps_total += 1
+        som_obervations: Original Gym observation
+        som_actions: Original Gym actions
+        """
+        state_som.update(som_observations, self.epoch)
+        worker_som.update(som_actions, self.epoch)
+        self.epoch += 1
 
         super().train_from_torch(self, batch)
