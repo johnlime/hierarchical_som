@@ -27,8 +27,8 @@ manager_som = ManagerSOMPositionAllNeighbor(total_nodes = 100,
 env = gym.make("CartPole-v1")
 obs = env.reset()
 
-worker_pool = torch.empty(sample_iter * 200, 1)
-state_pool = torch.empty(sample_iter * 200, 3)
+worker_pool = torch.empty(sample_iter, 1)
+state_pool = torch.empty(sample_iter, 3)
 
 tmp_cum_return = 0
 tmp_epoch_count = 0

@@ -1,5 +1,3 @@
-from custom_env.***** import ******
-
 import libraries.RlkitExtension.rlkit.torch.pytorch_util as ptu
 from libraries.RlkitExtension.rlkit.torch.ppo.ppo_env_replay_buffer import PPOEnvReplayBuffer
 from libraries.RlkitExtension.rlkit.envs.wrappers import NormalizedBoxEnv
