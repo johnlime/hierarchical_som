@@ -1,4 +1,5 @@
 from libraries.RlkitExtension.rlkit.torch.ppo.ppo import PPOTrainer
+import torch.optim as optim
 
 class SOMPPOTrainer(PPOTrainer):
     def __init__(

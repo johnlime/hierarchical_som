@@ -1,27 +1,31 @@
-import libraries.RlkitExtension.rlkit.torch.pytorch_util as ptu
-from libraries.RlkitExtension.rlkit.torch.ppo.ppo_env_replay_buffer import PPOEnvReplayBuffer
-from libraries.RlkitExtension.rlkit.envs.wrappers import NormalizedBoxEnv
-from libraries.RlkitExtension.rlkit.launchers.launcher_util import setup_logger
+import sys
+sys.path.append('libraries/RlkitExtension')
+
+import rlkit.torch.pytorch_util as ptu
+from rlkit.torch.ppo.ppo_env_replay_buffer import PPOEnvReplayBuffer
+from rlkit.envs.wrappers import NormalizedBoxEnv
+from rlkit.launchers.launcher_util import setup_logger
 from model.pose_somatotopic_ppo.path_collector import SOMPPOMdpPathCollector
-from libraries.RlkitExtension.rlkit.torch.ppo.policies import DiscretePolicy, TanhGaussianPolicy, MakeDeterministic
+from rlkit.torch.ppo.policies import DiscretePolicy, MakeDeterministic
 from model.pose_somatotopic_ppo.trainer import SOMPPOTrainer
-from libraries.RlkitExtension.rlkit.torch.networks import FlattenMlp
-from libraries.RlkitExtension.rlkit.torch.ppo.ppo_torch_batch_rl_algorithm import PPOTorchBatchRLAlgorithm
+from rlkit.torch.networks import FlattenMlp
+from rlkit.torch.ppo.ppo_torch_batch_rl_algorithm import PPOTorchBatchRLAlgorithm
 from model.kohonen_som import KohonenSOM
 
 import torch
+import gym
 import pickle
 
 def experiment(variant):
     torch.autograd.set_detect_anomaly(True)
-    expl_env = NormalizedBoxEnv(gym.make("Cartpole-v1"))
-    eval_env = NormalizedBoxEnv(gym.make("Cartpole-v1"))
-    obs_dim = expl_env.observation_space.low.size
-    action_dim = eval_env.action_space.low.size
+    expl_env = gym.make("CartPole-v1")
+    eval_env = gym.make("CartPole-v1")
+    obs_dim = 4
+    action_dim = 1
 
-    som_max_update_iterations = variant['algorithm_kwargs']['num_iter']
-                            * variant['algorithm_kwargs']['num_eval_steps_per_epoch']
-                            * variant['algorithm_kwargs']['um_trains_per_train_loop']
+    som_max_update_iterations = variant['algorithm_kwargs']['num_iter'] \
+                            * variant['algorithm_kwargs']['num_eval_steps_per_epoch'] \
+                            * variant['algorithm_kwargs']['num_trains_per_train_loop']
 
     M = variant['layer_size']
     vf = FlattenMlp(
@@ -31,11 +35,11 @@ def experiment(variant):
     )
     policy = DiscretePolicy(
         obs_dim=2,
-        action_dim=100,
+        action_dim=2,
         hidden_sizes=[M, M],
     )
-    state_som = KohonenSOM(total_nodes=100, node_size=obs_dim, update_iterations=)
-    worker_som = KohonenSOM(total_nodes=2, node_size=action_dim, update_iterations=)
+    state_som = KohonenSOM(total_nodes=100, node_size=obs_dim, update_iterations=som_max_update_iterations)
+    worker_som = KohonenSOM(total_nodes=2, node_size=action_dim, update_iterations=som_max_update_iterations)
     eval_policy = MakeDeterministic(policy)
     eval_step_collector = SOMPPOMdpPathCollector(
         eval_env,
