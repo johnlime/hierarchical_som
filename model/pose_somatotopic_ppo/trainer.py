@@ -1,7 +1,7 @@
-from libraries.RlkitExtension.rlkit.torch.ppo.ppo import PPOTrainer
+from libraries.RlkitExtension.rlkit.torch.ppo.discrete_ppo import DiscretePPOTrainer
 import torch.optim as optim
 
-class SOMPPOTrainer(PPOTrainer):
+class SOMPPOTrainer(DiscretePPOTrainer):
     def __init__(
             self,
             env,
@@ -49,7 +49,6 @@ class SOMPPOTrainer(PPOTrainer):
         """
         som_obs = batch["som_observations"]
         som_actions = batch["som_actions"]
-        print(som_actions)
 
         self.state_som.update(som_obs, self.epoch)
         self.worker_som.update(som_actions, self.epoch)
