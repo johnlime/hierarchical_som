@@ -2,8 +2,8 @@ import sys
 sys.path.append('libraries/RlkitExtension')
 
 import rlkit.torch.pytorch_util as ptu
-from rlkit.torch.ppo.ppo_env_replay_buffer import PPOEnvReplayBuffer
-from rlkit.envs.wrappers import NormalizedBoxEnv
+from model.pose_somatotopic_ppo.som_ppo_env_replay_buffer import SOMPPOEnvReplayBuffer
+# from rlkit.envs.wrappers import NormalizedBoxEnv
 from rlkit.launchers.launcher_util import setup_logger
 from model.pose_somatotopic_ppo.path_collector import SOMPPOMdpPathCollector
 from rlkit.torch.ppo.policies import DiscretePolicy, MakeDeterministic
@@ -11,15 +11,16 @@ from model.pose_somatotopic_ppo.trainer import SOMPPOTrainer
 from rlkit.torch.networks import FlattenMlp
 from rlkit.torch.ppo.ppo_torch_batch_rl_algorithm import PPOTorchBatchRLAlgorithm
 from model.kohonen_som import KohonenSOM
+from custom_env.cartpole_real_number_support import CartPoleEnvReal
 
 import torch
-import gym
+# import gym
 import pickle
 
 def experiment(variant):
     torch.autograd.set_detect_anomaly(True)
-    expl_env = gym.make("CartPole-v1")
-    eval_env = gym.make("CartPole-v1")
+    expl_env = CartPoleEnvReal()
+    eval_env = CartPoleEnvReal()
     obs_dim = 4
     action_dim = 1
 
@@ -58,7 +59,7 @@ def experiment(variant):
         gae_lambda=0.97,
         discount=0.995,
     )
-    replay_buffer = PPOEnvReplayBuffer(
+    replay_buffer = SOMPPOEnvReplayBuffer(
         variant['replay_buffer_size'],
         expl_env,
     )

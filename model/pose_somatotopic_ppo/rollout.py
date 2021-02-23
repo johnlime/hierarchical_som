@@ -15,7 +15,7 @@ def som_rollout(
     observations = []
     actions = []
     rewards = []
-    next_oservations = []
+    next_observations = []
     terminals = []
     agent_infos = []
     env_infos = []
@@ -32,11 +32,12 @@ def som_rollout(
         env.render(**render_kwargs)
     while path_length < max_path_length:
         a, agent_info = agent.get_action(o)
-        som_a = worker_som.w[np.argmax(a)]
+        a = np.argmax(a)
+        som_a = worker_som.w[a]
         next_som_o, r, d, env_info = env.step(som_a)
 
-        o = state_som.location[state_som.select_winner(som_o)]
-        next_o = state_som.location[state_som.select_winner(next_som_o)]
+        o = np.array(state_som.location[state_som.select_winner(som_o)])
+        next_o = np.array(state_som.location[state_som.select_winner(next_som_o)])
 
         observations.append(o)
         rewards.append(r)
@@ -46,7 +47,7 @@ def som_rollout(
         agent_infos.append(agent_info)
         env_infos.append(env_info)
 
-        som_obervations.append(som_o)
+        som_observations.append(som_o)
         som_actions.append(som_a)
 
         path_length += 1
@@ -56,7 +57,6 @@ def som_rollout(
         o = next_o
         if render:
             env.render(**render_kwargs)
-
     actions = np.array(actions)
     if len(actions.shape) == 1:
         actions = np.expand_dims(actions, 1)
@@ -79,6 +79,6 @@ def som_rollout(
         agent_infos=agent_infos,
         env_infos=env_infos,
 
-        som_observations=som_obervations,
+        som_observations=som_observations,
         som_actions=som_actions,
     )
