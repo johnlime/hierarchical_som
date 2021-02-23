@@ -47,8 +47,12 @@ class SOMPPOTrainer(PPOTrainer):
         som_obervations: Original Gym observation
         som_actions: Original Gym actions
         """
-        self.state_som.update(som_observations, self.epoch)
+        som_obs = batch["som_observations"]
+        som_actions = batch["som_actions"]
+        print(som_actions)
+
+        self.state_som.update(som_obs, self.epoch)
         self.worker_som.update(som_actions, self.epoch)
         self.epoch += 1
 
-        super().train_from_torch(self, batch)
+        super().train_from_torch(batch)

@@ -1,6 +1,10 @@
 from libraries.RlkitExtension.rlkit.torch.ppo.ppo_path_collector import PPOMdpPathCollector
 from model.pose_somatotopic_ppo.rollout import som_rollout
 
+from rlkit.torch.core import torch_ify, np_ify
+import numpy as np
+import torch
+
 class SOMPPOMdpPathCollector (PPOMdpPathCollector):
     def __init__(
             self,
@@ -33,6 +37,51 @@ class SOMPPOMdpPathCollector (PPOMdpPathCollector):
             vf = vf,
             discount=discount,
             gae_lambda=gae_lambda
+        )
+
+    # Not the best implementation, since only the output is altered, but I don't really care enough to fix the original library as well
+    def add_advantages(self, path, path_len, flag):
+        if flag:
+            next_vf = self.vf(torch_ify(path["next_observations"]))
+            cur_vf = self.vf(torch_ify(path["observations"]))
+            rewards = torch_ify(path["rewards"])
+            term = (1 - torch_ify(path["terminals"].astype(np.float32)))
+            delta = rewards + term * self.discount * next_vf - cur_vf
+            advantages = torch.zeros((path_len))
+            returns = torch.zeros((path_len))
+            gae = 0
+            R = 0
+
+            for i in reversed(range(path_len)):
+                advantages[i] = delta[i] + term[i] * (self.discount * self.gae_lambda) * gae
+                gae = advantages[i]
+
+                returns[i] = rewards[i] + term[i] * self.discount * R
+                R = returns[i]
+
+            advantages = np_ify(advantages)
+            if advantages.std() != 0.0:
+                advantages = (advantages - advantages.mean()) / advantages.std()
+            else:
+                advantages = (advantages - advantages.mean())
+
+            returns = np_ify(returns)
+        else:
+            advantages = np.zeros(path_len)
+            returns = np.zeros(path_len)
+        return dict(
+            observations=path["observations"],
+            actions=path["actions"],
+            rewards=path["rewards"],
+            next_observations=path["next_observations"],
+            terminals=path["terminals"],
+            agent_infos=path["agent_infos"],
+            env_infos=path["env_infos"],
+            advantages=advantages,
+            returns=returns,
+
+            som_observations=path["som_observations"],
+            som_actions=path["som_actions"],
         )
 
     def collect_new_paths(

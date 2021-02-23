@@ -2,7 +2,7 @@ import sys
 sys.path.append('libraries/RlkitExtension')
 
 import rlkit.torch.pytorch_util as ptu
-from model.pose_somatotopic_ppo.som_ppo_env_replay_buffer import SOMPPOEnvReplayBuffer
+from model.pose_somatotopic_ppo.env_replay_buffer import SOMPPOEnvReplayBuffer
 # from rlkit.envs.wrappers import NormalizedBoxEnv
 from rlkit.launchers.launcher_util import setup_logger
 from model.pose_somatotopic_ppo.path_collector import SOMPPOMdpPathCollector
@@ -62,6 +62,8 @@ def experiment(variant):
     replay_buffer = SOMPPOEnvReplayBuffer(
         variant['replay_buffer_size'],
         expl_env,
+        2, # "action" in replay buffer is the number of output SOM nodes
+        1,
     )
     trainer = SOMPPOTrainer(
         env=eval_env,
