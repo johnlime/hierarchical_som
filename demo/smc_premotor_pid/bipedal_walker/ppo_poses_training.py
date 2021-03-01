@@ -2,10 +2,10 @@ import sys
 sys.path.append('libraries/RlkitExtension')
 
 import rlkit.torch.pytorch_util as ptu
-from rlkit.torch.ppo.ppo_env_replay_buffer import PPOEnvReplayBuffer
+from model.pose_ppo.env_replay_buffer import PosePPOEnvReplayBuffer
 from rlkit.envs.wrappers import NormalizedBoxEnv
 from rlkit.launchers.launcher_util import setup_logger
-from rlkit.torch.ppo.ppo_path_collector import PPOMdpPathCollector
+from model.pose_ppo.path_collector import PosePPOMdpPathCollector
 from rlkit.torch.ppo.policies import TanhGaussianPolicy, MakeDeterministic
 from rlkit.torch.ppo.ppo import PPOTrainer
 from rlkit.torch.networks import FlattenMlp
@@ -17,7 +17,7 @@ def experiment(variant):
     torch.autograd.set_detect_anomaly(True)
     expl_env = NormalizedBoxEnv(BipedalWalkerPoses())
     eval_env = NormalizedBoxEnv(BipedalWalkerPoses())
-    obs_dim = expl_env.observation_space.low.size
+    obs_dim = expl_env.observation_space.low.size + 4
     action_dim = eval_env.action_space.low.size
 
     M = variant['layer_size']
@@ -32,12 +32,12 @@ def experiment(variant):
         hidden_sizes=[M, M],
     )
     eval_policy = MakeDeterministic(policy)
-    eval_step_collector = PPOMdpPathCollector(
+    eval_step_collector = PosePPOMdpPathCollector(
         eval_env,
         eval_policy,
         calculate_advantages=False
     )
-    expl_step_collector = PPOMdpPathCollector(
+    expl_step_collector = PosePPOMdpPathCollector(
         expl_env,
         policy,
         calculate_advantages=True,
@@ -45,9 +45,10 @@ def experiment(variant):
         gae_lambda=0.97,
         discount=0.995,
     )
-    replay_buffer = PPOEnvReplayBuffer(
+    replay_buffer = PosePPOEnvReplayBuffer(
         variant['replay_buffer_size'],
         expl_env,
+        4, # pose dimension
     )
     trainer = PPOTrainer(
         env=eval_env,

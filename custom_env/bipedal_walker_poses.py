@@ -11,11 +11,18 @@ from custom_env.bipedal_walker_clone import (ContactDetector, BipedalWalker,
                                             LEG_DOWN,
                                             LEG_FD,
                                             MOTORS_TORQUE,
-                                            LOWER_FD)
+                                            LOWER_FD,
+                                            SPEED_HIP,
+                                            SPEED_KNEE,
+                                            FPS,
+                                            LIDAR_RANGE,
+                                            TERRAIN_LENGTH,
+                                            TERRAIN_GRASS)
 import numpy as np
 import Box2D
 from Box2D.b2 import circleShape, revoluteJointDef
 import random
+import math
 
 
 class BipedalWalkerPoses (BipedalWalker):
@@ -180,7 +187,7 @@ class BipedalWalkerPoses (BipedalWalker):
 
         reward = 0
         for i in range(4):
-            reward += abs(self.joints[i] - self.target_pose[i])
+            reward += abs(self.joints[i].angle - self.target_pose[i])
         # if self.prev_shaping is not None:
         #     reward = shaping - self.prev_shaping
         # self.prev_shaping = shaping
@@ -236,13 +243,5 @@ class BipedalWalkerPoses (BipedalWalker):
                     self.viewer.draw_polygon(path, color=obj.color1)
                     path.append(path[0])
                     self.viewer.draw_polyline(path, color=obj.color2, linewidth=2)
-
-        # flagy1 = TERRAIN_HEIGHT
-        # flagy2 = flagy1 + 50/SCALE
-        # x = TERRAIN_STEP*3
-        # self.viewer.draw_polyline( [(x, flagy1), (x, flagy2)], color=(0,0,0), linewidth=2 )
-        # f = [(x, flagy2), (x, flagy2-10/SCALE), (x+25/SCALE, flagy2-5/SCALE)]
-        # self.viewer.draw_polygon(f, color=(0.9,0.2,0) )
-        # self.viewer.draw_polyline(f + [f[0]], color=(0,0,0), linewidth=2 )
 
         return self.viewer.render(return_rgb_array = mode=='rgb_array')
