@@ -187,7 +187,7 @@ class BipedalWalkerPoses (BipedalWalker):
 
         reward = 0
         for i in range(4):
-            reward += abs(self.joints[i].angle - self.target_pose[i])
+            reward -= abs(self.joints[i].angle - self.target_pose[i])
         # if self.prev_shaping is not None:
         #     reward = shaping - self.prev_shaping
         # self.prev_shaping = shaping
