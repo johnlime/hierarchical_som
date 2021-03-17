@@ -60,7 +60,7 @@ SOM-based algorithms additionally has a better visualization scheme than the fee
 ## Evaluation
 We compare the performance of all of the aforementioned models using the two tasks below.
 
-- NavigationTaskV2
+- NavigationTask
 
   - An environment where an agent controlled by such has to navigate itself from one point to another.
 
@@ -114,9 +114,9 @@ python3 demo/<MODEL_NAME>/cartpole/manager_cartpole_position.py
 
 - Visualization of Pose-Somatotopic model (both one-hot vector based and position based state space representations) tested on Cartpole-v1
 
-(B) https://github.com/johnlime/hierarchical_som/blob/master/demo/NavigationTaskV2%20w%20ManagerSOM.ipynb
+(B) https://github.com/johnlime/hierarchical_som/blob/master/demo/NavigationTask%20w%20ManagerSOM.ipynb
 
-- Visualization of the position-based state space representation of the SMC-Premotor-PID Model using NavigationTaskV2
+- Visualization of the position-based state space representation of the SMC-Premotor-PID Model using NavigationTask
 
 (C-1) https://github.com/johnlime/hierarchical_som/blob/master/data/smc_premotor_pid/bipedal_walker/affordance_controller.png
 
@@ -128,7 +128,7 @@ python3 demo/<MODEL_NAME>/cartpole/manager_cartpole_position.py
 
 ## Analysis of the Current Poor Results
 
-- SMC-Premotor-PID model was successfully able to produce good results for navigation an agent from one point to another using NavigationTaskV2 (B)
+- SMC-Premotor-PID model was successfully able to produce good results for navigation an agent from one point to another using NavigationTask (B)
 
 - **Using an approximation of state and action spaces may not be appropriate when the task is to arrive to an unstable fixed point.** (A)
 

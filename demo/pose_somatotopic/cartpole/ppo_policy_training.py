@@ -85,6 +85,10 @@ def experiment(variant):
     algorithm.to(ptu.device)
     algorithm.train()
 
+    state_filehandler = open("data/pose_somatotopic/cartpole/ppo/state_som.obj", 'wb')
+    pickle.dump(state_som, state_filehandler)
+    worker_filehandler = open("data/pose_somatotopic/cartpole/ppo/worker_som.obj", 'wb')
+    pickle.dump(worker_som, worker_filehandler)
 
 
 
@@ -118,8 +122,3 @@ if __name__ == "__main__":
     setup_logger('PPOCartpole-v1', variant=variant)
     #ptu.set_gpu_mode(True)  # optionally set the GPU (default=False)
     experiment(variant)
-
-    state_filehandler = open("data/pose_somatotopic/cartpole/ppo/state_som.obj", 'wb')
-    pickle.dump(state_som, state_filehandler)
-    worker_filehandler = open("data/pose_somatotopic/cartpole/ppo/worker_som.obj", 'wb')
-    pickle.dump(worker_som, worker_filehandler)
