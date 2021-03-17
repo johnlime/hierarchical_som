@@ -110,7 +110,7 @@ python3 demo/<MODEL_NAME>/cartpole/manager_cartpole_position.py
 
 ## Current (Poor) Results
 
-(A) https://github.com/johnlime/hierarchical_som/blob/master/demo/Visualization.ipynb
+(A) https://github.com/johnlime/hierarchical_som/blob/master/demo/Cartpole%20SOM%20Control%20Visualization.ipynb
 
 - Visualization of Pose-Somatotopic model (both one-hot vector based and position based state space representations) tested on Cartpole-v1
 
