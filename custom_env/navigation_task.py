@@ -35,7 +35,8 @@ class NavigationTask():
     def state(self):
         return self.current_position
 
-class NavigationTaskDirectional():
+    
+class NavigationTaskDirectional(NavigationTask):
     def step(self, step_radian):
         optimal_vector = (self.goal - self.current_position) / torch.sqrt(torch.sum((self.goal - self.current_position) ** 2))
 
@@ -54,3 +55,23 @@ class NavigationTaskDirectional():
         self.current_position += self.speed * step_vector
 
         return reward, self.current_position
+    
+
+class NavigationTaskMultiTarget(NavigationTask):
+    def __init__(self):
+        super().__init__()
+        self.all_goals = torch.tensor([[0.5, 0.5], [0.4, 0.2]]).float()
+        self.current_goal_index = 0
+        self.goal = self.all_goals[self.current_goal_index]
+        
+    def step(target):
+        reward, return_position = super().step(target)
+        
+        if torch.sqrt(torch.sum((self.goal - self.current_position) ** 2)) < 0.05:
+            self.current_goal_index += 1
+            if self.current_goal_index < self.all_goals.shape[0]:
+                self.goal = self.all_goals[self.current_goal_index]
+            else:
+                pass
+        
+    
