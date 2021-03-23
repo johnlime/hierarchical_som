@@ -15,18 +15,16 @@ class NavigationTask():
         step_vector = (target - self.current_position) / torch.sqrt(torch.sum((target - self.current_position) ** 2))
         optimal_vector = (self.goal - self.current_position) / torch.sqrt(torch.sum((self.goal - self.current_position) ** 2))
 
-        step_radian = math.asin(step_vector[1]) # positive or negative radian
-        if math.acos(step_vector[0]) < 0:
-            step_radian = step_radian / abs(step_radian) * math.pi - step_radian
+        # Angle between two vectors in 2D space can be determined via dot product and the magnitude of the two vectors
+        # Magnitude of the two vectors are already normalized
+        dot_product = torch.dot(step_vector, optimal_vector)
+        if (dot_product > 1): 
+            dot_product = 1
+        elif (dot_product < -1):
+            dot_product = -1
+        dif_radian = math.acos(dot_product)
 
-        optimal_radian = math.asin(optimal_vector[1])
-        if math.acos(optimal_vector[0]) < 0:
-            optimal_radian = optimal_radian / abs(optimal_radian) * math.pi - optimal_radian
-
-        reward = abs(step_radian - optimal_radian)
-        if reward > math.pi:
-            reward = 2 * math.pi - reward
-        reward = math.pi / 4 - reward
+        reward = math.pi - dif_radian
 
         self.current_position += self.speed * step_vector
 
@@ -43,14 +41,13 @@ class NavigationTaskDirectional(NavigationTask):
         if step_radian >= 2.0 * math.pi or step_radian < 0:
             raise Exception("step_radian should be 0 <= x < 2pi")
 
-        optimal_radian = math.asin(optimal_vector[1])
-        if math.acos(optimal_vector[0]) < 0:
-            optimal_radian = optimal_radian / abs(optimal_radian) * math.pi - optimal_radian
+        optimal_radian = math.acos(optimal_vector[1])
+        if math.asin(optimal_vector[0]) < 0:
+            optimal_radian = 2 * math.pi - optimal_radian
 
         reward = abs(step_radian - optimal_radian)
         if reward > math.pi:
             reward = 2 * math.pi - reward
-        reward = math.pi / 4 - reward
 
         self.current_position += self.speed * step_vector
 
@@ -60,18 +57,27 @@ class NavigationTaskDirectional(NavigationTask):
 class NavigationTaskMultiTarget(NavigationTask):
     def __init__(self):
         super().__init__()
-        self.all_goals = torch.tensor([[0.5, 0.5], [0.4, 0.2]]).float()
+        self.all_goals = torch.tensor([[0.4, 0.2], [0.5, 0.5]]).float()
+        self.goal_completed = [False, False]
         self.current_goal_index = 0
         self.goal = self.all_goals[self.current_goal_index]
         
-    def step(target):
+    def reset(self):
+        super().reset()
+        self.goal_completed = [False, False]
+        self.current_goal_index = 0
+        self.goal = self.all_goals[self.current_goal_index]
+        
+    def step(self, target):
         reward, return_position = super().step(target)
         
-        if torch.sqrt(torch.sum((self.goal - self.current_position) ** 2)) < 0.05:
+        if torch.sqrt(torch.sum((self.goal - self.current_position) ** 2)) < 0.1:
+            self.goal_completed[self.current_goal_index] = True
             self.current_goal_index += 1
             if self.current_goal_index < self.all_goals.shape[0]:
                 self.goal = self.all_goals[self.current_goal_index]
             else:
                 pass
         
+        return reward, return_position
     
