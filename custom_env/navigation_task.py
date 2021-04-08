@@ -70,10 +70,12 @@ class NavigationTaskMultiTarget(NavigationTask):
         
     def step(self, target):
         reward, return_position = super().step(target)
-        
+
         if torch.sqrt(torch.sum((self.goal - self.current_position) ** 2)) < 0.1:
-            self.goal_completed[self.current_goal_index] = True
-            self.current_goal_index += 1
+            if self.current_goal_index >= len(self.goal_completed):
+                self.goal_completed[self.current_goal_index] = True
+                self.current_goal_index += 1
+                
             if self.current_goal_index < self.all_goals.shape[0]:
                 self.goal = self.all_goals[self.current_goal_index]
             else:
