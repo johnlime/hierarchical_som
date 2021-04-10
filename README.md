@@ -68,6 +68,10 @@ We compare the performance of all of the aforementioned models using the two tas
 
   - Rewards' range is standardized to have the range: `[-math.pi, math.pi]`
 
+- NavigationTaskMultiTarget
+
+  - NavigationTask with multiple target destinations
+
 - Cartpole-v1 task in OpenAI Gym
 
 ## Dependencies
@@ -109,14 +113,17 @@ python3 demo/<MODEL_NAME>/cartpole/manager_cartpole_position.py
 ```
 
 ## Current (Poor) Results
-
-(A) https://github.com/johnlime/hierarchical_som/blob/master/demo/Cartpole%20SOM%20Control%20Visualization.ipynb
-
-- Visualization of Pose-Somatotopic model (both one-hot vector based and position based state space representations) tested on Cartpole-v1
-
-(B) https://github.com/johnlime/hierarchical_som/blob/master/demo/NavigationTask%20w%20ManagerSOM.ipynb
+(A-1) https://github.com/johnlime/hierarchical_som/blob/master/demo/NavigationTask%20w%20ManagerSOM.ipynb
 
 - Visualization of the position-based state space representation of the SMC-Premotor-PID Model using NavigationTask
+
+(A-2) https://github.com/johnlime/hierarchical_som/blob/master/demo/NavigationTaskMultiTarget%20w%20ManagerSOM.ipynb
+
+- Visualization of the position-based state space representation of the SMC-Premotor-PID Model using NavigationTaskMultiTarget
+
+(B) https://github.com/johnlime/hierarchical_som/blob/master/demo/Cartpole%20SOM%20Control%20Visualization.ipynb
+
+- Visualization of Pose-Somatotopic model (both one-hot vector based and position based state space representations) tested on Cartpole-v1
 
 (C-1) https://github.com/johnlime/hierarchical_som/blob/master/data/smc_premotor_pid/bipedal_walker/affordance_controller.png
 
@@ -128,9 +135,9 @@ python3 demo/<MODEL_NAME>/cartpole/manager_cartpole_position.py
 
 ## Analysis of the Current Poor Results
 
-- SMC-Premotor-PID model was successfully able to produce good results for navigation an agent from one point to another using NavigationTask (B)
+- SMC-Premotor-PID model was successfully able to produce good results for navigation an agent from one point to another using NavigationTask (A-1, A-2)
 
-- **Using an approximation of state and action spaces may not be appropriate when the task is to arrive to an unstable fixed point.** (A)
+- **Using an approximation of state and action spaces may not be appropriate when the task is to arrive to an unstable fixed point.** (B)
 
   - Can SOM be adapted to deal with unstable dynamical systems?
 
