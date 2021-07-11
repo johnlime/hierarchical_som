@@ -1,7 +1,0 @@
-1. Using an approximation of state and action spaces not be appropriate when the task is to arrive to an unstable fixed point. (3.1)
-
-2. Since the goal of the algorithm is to mimic the cerebral cortex, research results in that field should be taken into consideration for better understanding and engineering.
-
-3. Hierarchical structure could be used for more complex sequential tasks
-
-3.1. Can SOM be adapted to deal with unstable dynamical systems? (1)
