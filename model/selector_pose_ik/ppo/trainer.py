@@ -38,15 +38,14 @@ class SOMPPOTrainer(DiscretePPOTrainer):
 
     def train_from_torch(self, batch):
         """
-        (next_)observations: 2-dimensional position representation of state_som
         actions: One-hot vector representation of worker_som
         advantage: Advantage for each obs-action pairs
 
-        som_obervations: Original Gym observation
-        som_actions: Original Gym actions
+        obervations: Original Gym observation
+        som_actions: Action SOM Output (Original Gym actions)
         """
         som_actions = batch["som_actions"]
-        
+
         self.worker_som.update(som_actions, self.epoch)
         self.epoch += 1
 

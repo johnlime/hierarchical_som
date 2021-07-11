@@ -31,7 +31,7 @@ def som_rollout(
         a, agent_info = agent.get_action(o)
         a = np.argmax(a)
         som_a = worker_som.w[a]
-        next_som_o, r, d, env_info = env.step(som_a)
+        next_o, r, d, env_info = env.step(som_a)
 
         observations.append(o)
         rewards.append(r)
