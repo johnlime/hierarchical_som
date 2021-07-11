@@ -7,7 +7,7 @@ class SOMPPOEnvReplayBuffer(PPOEnvReplayBuffer):
             self,
             max_replay_buffer_size,
             env,
-            action_dim = 2, # Expecting position-based Reference SOM
+            action_dim,
             som_action_dim=None,
             env_info_sizes=None,
     ):
@@ -16,14 +16,9 @@ class SOMPPOEnvReplayBuffer(PPOEnvReplayBuffer):
                 env,
                 env_info_sizes=None,
         )
-        # observation_dim = 2   # No state SOM defined
-        # self._observation_dim = observation_dim
         self._action_dim = action_dim
-        # self._observations = np.zeros((max_replay_buffer_size, observation_dim))
-        # self._next_obs = np.zeros((max_replay_buffer_size, observation_dim))
         self._actions = np.zeros((max_replay_buffer_size, action_dim))
 
-        self._som_observations = np.zeros((max_replay_buffer_size, get_dim(self.env.observation_space)))
         if som_action_dim == None:
             self._som_actions = np.zeros((max_replay_buffer_size, get_dim(self.env.action_space)))
         else:
@@ -35,7 +30,6 @@ class SOMPPOEnvReplayBuffer(PPOEnvReplayBuffer):
                 action,
                 reward,
                 next_obs,
-                som_obs,
                 som_action,
                 terminal,
                 agent_info,
@@ -47,7 +41,6 @@ class SOMPPOEnvReplayBuffer(PPOEnvReplayBuffer):
             path["actions"],
             path["rewards"],
             path["next_observations"],
-            path["som_observations"],
             path["som_actions"],
             path["terminals"],
             path["agent_infos"],
@@ -60,7 +53,6 @@ class SOMPPOEnvReplayBuffer(PPOEnvReplayBuffer):
                 action=action,
                 reward=reward,
                 next_observation=next_obs,
-                som_observation=som_obs,
                 som_action=som_action,
                 terminal=terminal,
                 agent_info=agent_info,
@@ -72,9 +64,7 @@ class SOMPPOEnvReplayBuffer(PPOEnvReplayBuffer):
 
     def add_sample(self, observation, action, reward, terminal,
                    next_observation, agent_info, advantage, returns,
-                   som_observation, som_action, **kwargs):
-
-        self._som_observations[self._top] = som_observation
+                   som_action, **kwargs):
         self._som_actions[self._top] = som_action
 
         return super().add_sample(
@@ -100,7 +90,6 @@ class SOMPPOEnvReplayBuffer(PPOEnvReplayBuffer):
             log_prob=self._log_prob[indices],
             advantage=self._advantage[indices],
             returns=self._return[indices],
-            som_observations=self._som_observations[indices],
             som_actions=self._som_actions[indices],
         )
         for key in self._env_info_keys:
@@ -109,6 +98,5 @@ class SOMPPOEnvReplayBuffer(PPOEnvReplayBuffer):
         return batch
 
     def end_epoch(self, epoch):
-        self._som_observations.fill(0)
         self._som_actions.fill(0)
         super().end_epoch(epoch)

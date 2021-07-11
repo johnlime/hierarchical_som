@@ -16,14 +16,15 @@ class SOMPPOEnvReplayBuffer(PPOEnvReplayBuffer):
                 env,
                 env_info_sizes=None,
         )
-        observation_dim = 2
+        observation_dim = 2 # Assumed to give a positional vector
         self._observation_dim = observation_dim
-        self._action_dim = action_dim
         self._observations = np.zeros((max_replay_buffer_size, observation_dim))
         self._next_obs = np.zeros((max_replay_buffer_size, observation_dim))
-        self._actions = np.zeros((max_replay_buffer_size, action_dim))
-
         self._som_observations = np.zeros((max_replay_buffer_size, get_dim(self.env.observation_space)))
+
+        self._action_dim = action_dim
+        self._actions = np.zeros((max_replay_buffer_size, action_dim))
+        
         if som_action_dim == None:
             self._som_actions = np.zeros((max_replay_buffer_size, get_dim(self.env.action_space)))
         else:
