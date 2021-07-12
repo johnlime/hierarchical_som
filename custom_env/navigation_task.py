@@ -73,7 +73,7 @@ class NavigationTaskMultiTarget(NavigationTask):
 
         dist = torch.sqrt(torch.sum((self.goal - self.current_position) ** 2))
 
-        if torch.sqrt(dist) < 0.1:
+        if torch.sqrt(dist) < 0.2:
             if self.current_goal_index < len(self.goal_completed):
                 self.goal_completed[self.current_goal_index] = True
                 self.current_goal_index += 1
