@@ -20,9 +20,10 @@ class KohonenSOM:
         x = torch.tensor(x)
         return torch.argmin(torch.norm(torch.sqrt((x - self.w)**2), p=1, dim=1), dim=0)
 
-    def select_winner_by_location(self, x):
-        x = torch.tensor(x)
-        return torch.argmin(torch.norm(torch.sqrt((x - self.location[:,:2]) ** 2), p=1, dim=1), dim=0)
+    # this is for when/if the selector inputs the state space by its SOM's node locations
+    # def select_winner_by_location(self, x):
+    #     x = torch.tensor(x)
+    #     return torch.argmin(torch.norm(torch.sqrt((x - self.location[:,:2]) ** 2), p=1, dim=1), dim=0)
 
     def sigma(self, t):
         s0 = 0.9
