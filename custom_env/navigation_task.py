@@ -18,7 +18,7 @@ class NavigationTask():
         # Angle between two vectors in 2D space can be determined via dot product and the magnitude of the two vectors
         # Magnitude of the two vectors are already normalized
         dot_product = torch.dot(step_vector, optimal_vector)
-        if (dot_product > 1): 
+        if (dot_product > 1):
             dot_product = 1
         elif (dot_product < -1):
             dot_product = -1
@@ -33,7 +33,7 @@ class NavigationTask():
     def state(self):
         return self.current_position
 
-    
+
 class NavigationTaskDirectional(NavigationTask):
     def step(self, step_radian):
         optimal_vector = (self.goal - self.current_position) / torch.sqrt(torch.sum((self.goal - self.current_position) ** 2))
@@ -52,7 +52,7 @@ class NavigationTaskDirectional(NavigationTask):
         self.current_position += self.speed * step_vector
 
         return reward, self.current_position
-    
+
 
 class NavigationTaskMultiTarget(NavigationTask):
     def __init__(self):
@@ -61,25 +61,26 @@ class NavigationTaskMultiTarget(NavigationTask):
         self.goal_completed = [False, False]
         self.current_goal_index = 0
         self.goal = self.all_goals[self.current_goal_index]
-        
+
     def reset(self):
         super().reset()
         self.goal_completed = [False, False]
         self.current_goal_index = 0
         self.goal = self.all_goals[self.current_goal_index]
-        
+
     def step(self, target):
         reward, return_position = super().step(target)
 
-        if torch.sqrt(torch.sum((self.goal - self.current_position) ** 2)) < 0.1:
-            if self.current_goal_index >= len(self.goal_completed):
+        dist = torch.sqrt(torch.sum((self.goal - self.current_position) ** 2))
+
+        if torch.sqrt(dist) < 0.1:
+            if self.current_goal_index < len(self.goal_completed):
                 self.goal_completed[self.current_goal_index] = True
                 self.current_goal_index += 1
-                
+
             if self.current_goal_index < self.all_goals.shape[0]:
                 self.goal = self.all_goals[self.current_goal_index]
             else:
                 pass
-        
+
         return reward, return_position
-    
