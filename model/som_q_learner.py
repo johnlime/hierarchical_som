@@ -30,7 +30,7 @@ class SOMQLearner (KohonenSOM):
 
     def select_winner(self, x):
         x = torch.tensor(x)
-        return torch.argmin(torch.norm(torch.sqrt((x - self.w[:self.state_dim])**2), p=1, dim=1), dim=0)
+        return torch.argmin(torch.norm(torch.sqrt((x - self.w[:, :self.state_dim])**2), p=1, dim=1), dim=0)
 
     def get_action(self, x):
         return torch.argmax(self.w[self.select_winner(x)][-self.action_som.total_nodes:], dim=0)
