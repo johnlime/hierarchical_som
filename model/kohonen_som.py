@@ -16,14 +16,13 @@ class KohonenSOM:
                 self.location[i*dim+j][1] = j
         self.w /= torch.norm(self.w)
 
-    def select_winner(self, x, location=False):
-        if location:
-            x = torch.tensor(x)
-            return torch.argmin(torch.norm(torch.sqrt((x - self.location[:,:2]) ** 2), p=1, dim=1), dim=0)
-        
-        else:
-            x = torch.tensor(x)
-            return torch.argmin(torch.norm(torch.sqrt((x - self.w)**2), p=1, dim=1), dim=0)
+    def select_winner(self, x):
+        x = torch.tensor(x)
+        return torch.argmin(torch.norm(torch.sqrt((x - self.w)**2), p=1, dim=1), dim=0)
+
+    def select_winner_by_location(self, x):
+        x = torch.tensor(x)
+        return torch.argmin(torch.norm(torch.sqrt((x - self.location[:,:2]) ** 2), p=1, dim=1), dim=0)
 
     def sigma(self, t):
         s0 = 0.9
