@@ -19,11 +19,11 @@ class SOMQLearner (KohonenSOM):
     {current_state, return_estimates_per_action}
     """
 
-    def __init__(self, total_nodes = None, state_dim = None, pose_som = None, update_iterations = 100):
+    def __init__(self, total_nodes = None, state_dim = None, action_som = None, update_iterations = 100):
         self.state_dim = state_dim
-        self.pose_som = pose_som
+        self.action_som = action_som
 
-        node_size = self.state_dim + self.pose_som.total_nodes
+        node_size = self.state_dim + self.action_som.total_nodes
 
         # self.w consists of a state_som-sized one hot encoder and a worker_som-sized categorical distribution
         super().__init__(total_nodes = total_nodes, node_size = node_size)
@@ -33,15 +33,15 @@ class SOMQLearner (KohonenSOM):
         return torch.argmin(torch.norm(torch.sqrt((x - self.w[:self.state_dim])**2), p=1, dim=1), dim=0)
 
     def get_action(self, x):
-        return torch.argmax(self.w[self.select_winner(x)][-self.pose_som.total_nodes:], dim=0)
+        return torch.argmax(self.w[self.select_winner(x)][-self.action_som.total_nodes:], dim=0)
 
     def get_value(self, x):
-        return torch.max(self.w[self.select_winner(x)][-self.pose_som.total_nodes:])
+        return torch.max(self.w[self.select_winner(x)][-self.action_som.total_nodes:])
 
     def get_softmax(self, x):
         return torch.max(f.softmax(self.w[
             self.select_winner(x)
-            ][-self.pose_som.total_nodes:]))[0]
+            ][-self.action_som.total_nodes:]))[0]
 
     def action_q_learning(self,
                         current_state = None,
@@ -97,7 +97,7 @@ class SOMQLearnerAllNeighbor (SOMQLearner):
             )
 
         # update weights by neighboring both the state space and the rewards
-        target_weights = torch.empty(self.state_dim + self.pose_som.total_nodes)
+        target_weights = torch.empty(self.state_dim + self.action_som.total_nodes)
         target_weights[:self.state_dim] = current_state
         target_weights[self.state_dim:] = self.w[winner_c][self.state_dim:]
         if htype==0:
