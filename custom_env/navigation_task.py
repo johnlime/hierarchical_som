@@ -84,3 +84,40 @@ class NavigationTaskMultiTarget(NavigationTask):
                 pass
 
         return reward, return_position
+
+    
+class NavigationTaskMultiPurpose(NavigationTask):
+    def __init__(self, goals):
+        super().__init__()
+        """
+        Input goals should be a (n, 2) tensor, 
+        where n is the number of goals to achieve
+        """
+        self.all_goals = goals.float()
+        self.goal_completed = [False] * self.all_goals.shape[0]
+        self.current_goal_index = 0
+        self.goal = self.all_goals[self.current_goal_index]
+        
+    def reset(self):
+        super().reset()
+        self.goal_completed = [False] * self.all_goals.shape[0]
+        self.current_goal_index = 0
+        self.goal = self.all_goals[self.current_goal_index]
+        
+    def step(self, target):
+        reward, return_position = super().step(target)
+
+        dist = torch.sqrt(torch.sum((self.goal - self.current_position) ** 2))
+
+        if torch.sqrt(dist) < 0.2:
+            if self.current_goal_index < len(self.goal_completed):
+                self.goal_completed[self.current_goal_index] = True
+                self.current_goal_index += 1
+
+            if self.current_goal_index < self.all_goals.shape[0]:
+                self.goal = self.all_goals[self.current_goal_index]
+            else:
+                pass
+
+        return reward, return_position
+
